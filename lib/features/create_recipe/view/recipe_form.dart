@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -41,10 +43,10 @@ class RecipeFormState extends State<RecipeForm> {
   }
 
   test() {
-    print('Title: ${_titleController.text}');
-    print('Description: ${_descriptionController.text}');
-    print('Cooking Time: ${_cookingTimeController.text}');
-    print('Ingredients: $ingredients');
+    developer.log('Title: ${_titleController.text}');
+    developer.log('Description: ${_descriptionController.text}');
+    developer.log('Cooking Time: ${_cookingTimeController.text}');
+    developer.log('Ingredients: $ingredients');
   }
 
   @override
@@ -119,12 +121,14 @@ class RecipeFormState extends State<RecipeForm> {
                       occasion: [],
                       portions: 0,
                     );
-                    print(recipe); // Para debug
+
+                    developer.log('Recipe: $recipe');
 
                     // Mostrar mensaje de éxito
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                          content: Text('¡Receta guardada con éxito!')),
+                        content: Text('¡Receta guardada con éxito!'),
+                      ),
                     );
 
                     // Opcional: regresar a la pantalla anterior

@@ -6,9 +6,7 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginState()) {
-    on<LoginEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<LoginEvent>((event, emit) {});
   }
 
   Future<User?> loginWithEmailAndPassword(String email, String password) async {

@@ -5,12 +5,10 @@ class MyRecipesListPart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Text('home.myRecipes.title'.tr()),
-        ],
-      ),
+    return Column(
+      children: [
+        Text('home.myRecipes.title'.tr()),
+      ],
     );
   }
 }
