@@ -1,0 +1,27 @@
+{
+    "core":{
+        "name": "Nombre"
+    },
+    "units": {
+        "cup": "Taza",
+        "tablespoon": "Cucharada",
+        "gram": "Gramo",
+        "milliliter": "Mililitro"
+    },
+    "home": {
+        "myRecipes": {
+        "title": "Mis recetas",
+        "newRecipe": "Nueva receta"
+        },
+        "profile": "Perfil",
+        "addRecipe": {
+        "title": "Nueva receta",
+        "ingredients": "Ingredientes",
+        "ingredient": "Ingrediente",
+        "ingredientPlaceholder": "Ej: 1 cucharada de azúcar",
+        "instructions": "Instrucciones",
+        "instruction": "Instrucción",
+        "instructionPlaceholder": "Ej: Mezclar los ingredientes"
+        }
+    }
+}
