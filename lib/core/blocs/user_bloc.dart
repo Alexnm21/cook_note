@@ -41,6 +41,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
   }
 
+  String getUserId() {
+    if (state is UserLoggedIn) {
+      return (state as UserLoggedIn).user.id;
+    }
+    throw Exception('User not logged in');
+  }
+
   @override
   Future<void> close() {
     authSubscription.cancel();

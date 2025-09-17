@@ -1,0 +1,3 @@
+id,name,image,description,ingredients,steps,difficulty,time,occasion,portions
+"550e8400-e29b-41d4-a716-446655440000","Spaghetti Bolognese","","Clásica receta italiana","[{""name"":""Tomato"",""quantity"":""2""},{""name"":""Beef"",""quantity"":""500g""}]","[""Cortar tomates"",""Cocinar carne"",""Mezclar ingredientes""]","Easy",30,"[""Dinner"",""Lunch""]",4
+"550e8400-e29b-41d4-a716-446655440001","Pancakes","","Receta para el desayuno","[{""name"":""Flour"",""quantity"":""200g""},{""name"":""Milk"",""quantity"":""250ml""}]","[""Mezclar"",""Cocinar"",""Servir""]","Medium",15,"[""Breakfast""]",2
