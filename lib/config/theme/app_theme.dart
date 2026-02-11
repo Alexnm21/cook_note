@@ -6,6 +6,7 @@ import 'styles/base_text_style.dart';
 class AppTheme {
   static ThemeData light = ThemeData.fallback().copyWith(
     primaryColor: AppColors.primary,
+    scaffoldBackgroundColor: AppColors.background,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppColors.primary,
       selectionColor: AppColors.primary.withOpacity(0.5),
@@ -50,6 +51,9 @@ class AppTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: AppColors.primary,
     ),
   );
 }

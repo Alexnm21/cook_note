@@ -1,11 +1,14 @@
+import '../enums/unit.dart';
+
 class Ingredient {
-  final String name;
+  String name;
   int grams;
   final double caloriesByGram;
   final double proteinByGram;
   final double carbsByGram;
   final double fatByGram;
   final String? image;
+  Unit? unit;
 
   Ingredient({
     required this.name,
@@ -15,17 +18,19 @@ class Ingredient {
     this.carbsByGram = 0,
     this.fatByGram = 0,
     this.image,
+    this.unit,
   });
 
   factory Ingredient.fromMap(Map<String, dynamic> map) {
     return Ingredient(
       name: map['name'],
-      grams: int.parse(map['grams'] ?? '0'),
-      caloriesByGram: double.parse(map['caloriesByGram'] ?? '0'),
-      proteinByGram: double.parse(map['proteinByGram'] ?? '0'),
-      carbsByGram: double.parse(map['carbsByGram'] ?? '0'),
-      fatByGram: double.parse(map['fatByGram'] ?? '0'),
+      grams: map['grams'] ?? 0,
+      caloriesByGram: map['caloriesByGram'] ?? 0,
+      proteinByGram: map['proteinByGram'] ?? 0,
+      carbsByGram: map['carbsByGram'] ?? 0,
+      fatByGram: map['fatByGram'] ?? 0,
       image: map['image'],
+      unit: UnitExtension.fromString(map['unit']),
     );
   }
 
@@ -38,6 +43,7 @@ class Ingredient {
       'carbsByGram': carbsByGram,
       'fatByGram': fatByGram,
       'image': image,
+      'unit': unit?.toString().split('.').last,
     };
   }
 

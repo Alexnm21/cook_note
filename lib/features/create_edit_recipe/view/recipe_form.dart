@@ -1,29 +1,39 @@
 import 'dart:io';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../config/router/router.dart';
 import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/styles/base_spaces.dart';
 import '../../../config/theme/styles/base_text_style.dart';
 import '../../../core/enums/difficulty.dart';
+import '../../../core/enums/macros.dart';
 import '../../../core/enums/occasion.dart';
+import '../../../core/enums/unit.dart';
 import '../../../core/models/ingredient.dart';
 import '../../../core/models/recipe.dart';
+import '../../../core/services/macros_ai_service.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_input_text.dart';
 import '../../../widgets/image_selector.dart';
 import '../../recipe/bloc/recipe_bloc.dart';
 
 part '../parts/difficulty_selector_part.dart';
+part '../parts/ingredient_list_form_part.dart';
+part '../parts/macros_form_part.dart';
 part '../parts/occasion_selector_part.dart';
+part '../parts/portion_selector_part.dart';
 part '../parts/steps_list_form_part.dart';
 part '../parts/time_form_part.dart';
 
 class RecipeForm extends StatefulWidget {
   final Recipe? updateRecipe;
-  const RecipeForm({super.key, this.updateRecipe});
+  final Function(Recipe)? onSave; // Only for add temporary new recipes
+  const RecipeForm({super.key, this.updateRecipe, this.onSave});
 
   @override
   RecipeFormState createState() => RecipeFormState();
@@ -31,29 +41,45 @@ class RecipeForm extends StatefulWidget {
 
 class RecipeFormState extends State<RecipeForm> {
   final _formKey = GlobalKey<FormState>();
+  late bool isDialog;
   late RecipeDto recipe;
   File? imageFile;
 
-  final List<Ingredient> ingredients = [];
+  Map<Macros, double>? macros;
 
   @override
   void initState() {
+    isDialog = widget.onSave != null;
     if (widget.updateRecipe != null) {
       recipe = RecipeDto.fromRecipe(widget.updateRecipe!);
+      macros = widget.updateRecipe!.macros;
     } else {
       recipe = RecipeDto();
+      recipe.ingredients = [];
+      recipe.steps = [];
+      recipe.occasion = [];
+      macros = null;
     }
+
     super.initState();
   }
 
   saveRecipe() {
     if (!_formKey.currentState!.validate()) return;
 
-    if (recipe.id == null) {
-      context.read<RecipeBloc>().addRecipe(recipe);
-    } else {
-      context.read<RecipeBloc>().updateRecipe(recipe);
+    recipe.macros = macros;
+    if (widget.onSave != null) {
+      widget.onSave!(recipe.toRecipe());
+      router.pop();
+      return;
     }
+    if (recipe.id == null) {
+      context.read<RecipeBloc>().addRecipe(recipe, imageFile);
+    } else {
+      context.read<RecipeBloc>().updateRecipe(recipe, imageFile);
+    }
+
+    router.goNamed('home');
   }
 
   @override
@@ -67,7 +93,7 @@ class RecipeFormState extends State<RecipeForm> {
           children: [
             // * TITLE
             CustomInputText(
-              initialValue: widget.updateRecipe?.name,
+              initialValue: recipe.name,
               onChanged: (value) {
                 recipe.name = value;
               },
@@ -82,27 +108,27 @@ class RecipeFormState extends State<RecipeForm> {
 
             spacings.y.s30,
 
-            // * IMAGE
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('core.image'.tr(), style: baseTextStyle.h2),
-                spacings.y.s10,
-                ImageSelector(
-                  imageFile: imageFile,
-                  onChange: (file) {
-                    setState(() => imageFile = file);
-                  },
-                  onRemove: () {
-                    setState(() => imageFile = null);
-                  },
-                ),
-              ],
-            ),
+            // * IMAGE,
+            if (!isDialog)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('core.image'.tr(), style: baseTextStyle.h2),
+                  spacings.y.s10,
+                  ImageSelector(
+                    imageFile: imageFile,
+                    imageUrl: recipe.image ?? '',
+                    onChange: (file) {
+                      setState(() => imageFile = file);
+                    },
+                    onRemove: () {
+                      setState(() => imageFile = null);
+                    },
+                  ),
+                ],
+              ),
+            if (!isDialog) spacings.y.s30,
 
-            spacings.y.s30,
-
-            // * DESCRIPTION
             CustomInputText(
               onChanged: (value) {
                 recipe.description = value;
@@ -114,7 +140,36 @@ class RecipeFormState extends State<RecipeForm> {
 
             spacings.y.s30,
 
-            // * TIME
+            PortionSelectorPart(
+              portions: recipe.portions ?? 1,
+              onChanged: (value) {
+                setState(() {
+                  recipe.portions = value;
+                });
+              },
+            ),
+
+            spacings.y.s30,
+
+            IngredientListFormPart(
+              ingredients: recipe.ingredients!,
+            ),
+
+            spacings.y.s30,
+
+            MacrosFormPart(
+              macros: macros,
+              ingredients: recipe.ingredients ?? [],
+              portions: recipe.portions ?? 1,
+              onChanged: (value) {
+                setState(() {
+                  macros = value;
+                });
+              },
+            ),
+
+            spacings.y.s30,
+
             TimeFormPart(
               time: recipe.time ?? 0,
               onChanged: (value) {
@@ -126,19 +181,11 @@ class RecipeFormState extends State<RecipeForm> {
 
             spacings.y.s30,
 
-            // * INGREDIENTS
-            // IngredientListFormPart(
-            //   ingredients: ingredients,
-            // ),
-
-            spacings.y.s30,
-
             // * STEPS
             StepsListFormPart(recipe: recipe),
 
             spacings.y.s30,
 
-            // * DIFFICULTY
             DifficultySelectorPart(
               difficulty: recipe.difficulty,
               onChanged: (value) {
@@ -147,24 +194,22 @@ class RecipeFormState extends State<RecipeForm> {
                 });
               },
             ),
-
-            spacings.y.s30,
-
-            // * OCCASION
-            OccasionSelectorPart(
-              occasions: recipe.occasion ?? [],
-              addOccasion: (value) {
-                recipe.occasion ??= [];
-                setState(() {
-                  recipe.occasion?.add(value);
-                });
-              },
-              removeOccasion: (value) {
-                setState(() {
-                  recipe.occasion?.remove(value);
-                });
-              },
-            ),
+            if (!isDialog) spacings.y.s30,
+            if (!isDialog)
+              OccasionSelectorPart(
+                occasions: recipe.occasion ?? [],
+                addOccasion: (value) {
+                  recipe.occasion ??= [];
+                  setState(() {
+                    recipe.occasion?.add(value);
+                  });
+                },
+                removeOccasion: (value) {
+                  setState(() {
+                    recipe.occasion?.remove(value);
+                  });
+                },
+              ),
             spacings.y.s20,
             // * SAVE
             CustomButton.text(

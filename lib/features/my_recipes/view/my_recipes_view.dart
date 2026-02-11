@@ -3,44 +3,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/styles/base_spaces.dart';
-import '../../../core/blocs/user_bloc.dart';
+import '../../../config/theme/styles/base_text_style.dart';
+import '../../../core/enums/occasion.dart';
 import '../../../widgets/recipe_card.dart';
+import '../../../widgets/svg_icon.dart';
 import '../bloc/recipe_list_bloc.dart';
 
 part '../parts/my_recipes_list_part.dart';
+part '../parts/recipe_filter_selector_part.dart';
 
 class MyRecipesView extends StatelessWidget {
   const MyRecipesView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RecipeListBloc(
-        userId: context.read<UserBloc>().getUserId(),
-      ),
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text('home.myRecipes.title'.tr()),
-          ),
-          body: Padding(
-            padding: paddings.x.s24,
-            child: const Column(
-              children: [
-                Text('Search'),
-                Text('Filter'),
-                MyRecipesListPart(),
-              ],
+    return Scaffold(
+        body: Column(
+          children: [
+            BlocBuilder<RecipeListBloc, RecipeListState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: paddings.x.s16,
+                  child: SearchBar(
+                    backgroundColor: WidgetStateProperty.all(Colors.white),
+                    hintText: 'core.search'.tr(),
+                    onChanged: (value) {
+                      context.read<RecipeListBloc>().searchRecipes(value);
+                    },
+                    leading: const SvgIcon(icon: 'search'),
+                    padding: WidgetStateProperty.all(paddings.x.s16),
+                  ),
+                );
+              },
             ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              context.pushNamed('createRecipe');
-            },
-            child: const Icon(
-              Icons.add,
+            spacings.y.s24,
+            BlocBuilder<RecipeListBloc, RecipeListState>(
+              builder: (context, state) {
+                return RecipeFilterSelectorPart(
+                  filterOccasions: state.filterOccasions,
+                  onFilterOccasion: (occasion) {
+                    context.read<RecipeListBloc>().filterOccasion(occasion);
+                  },
+                );
+              },
             ),
-          )),
-    );
+            spacings.y.s24,
+            const MyRecipesListPart(),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.pushNamed('createRecipe');
+          },
+          child: const Icon(
+            Icons.add,
+          ),
+        ));
   }
 }

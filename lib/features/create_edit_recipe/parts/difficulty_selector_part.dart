@@ -53,20 +53,23 @@ class _DifficultyContainer extends StatelessWidget {
     Color backgroundColor =
         isSelected ? AppColors.primary.withOpacity(0.3) : Colors.transparent;
     Color textColor = isSelected ? Colors.black : Colors.grey;
-    return GestureDetector(
-      onTap: () => onTap(difficulty),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        margin: paddings.x.s10,
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          border: Border.all(color: borderColor),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          'recipe.difficulty.${difficulty.name}'.tr(),
-          style: baseTextStyle.h3.copyWith(color: textColor),
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => onTap(difficulty),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          margin: paddings.x.s5,
+          padding: paddings.y.s10,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            border: Border.all(color: borderColor),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(
+            'recipe.difficulty.${difficulty.name}'.tr(),
+            style: baseTextStyle.h3.copyWith(color: textColor),
+          ),
         ),
       ),
     );

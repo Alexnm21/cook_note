@@ -38,104 +38,107 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            spacings.y.s10,
-            const SvgIcon(icon: 'cooking', size: 200),
-            spacings.y.s32,
-            Text(
-              'login.title'.tr(),
-              style: baseTextStyle.h1,
-            ),
-            spacings.y.s16,
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'login.email'.tr(),
-                prefixIcon: const Icon(Icons.email),
-                border: const OutlineInputBorder(),
-              ),
-              controller: emailCtrl,
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) =>
-                  ValidationService.validateEmail(value)?.tr(),
-            ),
-            spacings.y.s16,
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'login.password'.tr(),
-                prefixIcon: const Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      obscurePassword = !obscurePassword;
-                    });
-                  },
-                  icon: SvgIcon(
-                    icon: !obscurePassword ? 'eye_open' : 'eye_closed',
-                  ),
-                ),
-                border: const OutlineInputBorder(),
-              ),
-              controller: passwordCtrl,
-              obscureText: obscurePassword,
-              validator: (value) =>
-                  ValidationService.validatePassword(value)?.tr(),
-            ),
-            spacings.y.s8,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    router.pushNamed(Routes.forgotPassword.name);
-                  },
-                  child: Text(
-                    'login.forgotPassword'.tr(),
-                    style: baseTextStyle.h3.copyWith(
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            spacings.y.s30,
-            ElevatedButton(
-              onPressed: () {
-                login();
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-              ),
-              child: Text(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              spacings.y.s10,
+              const SvgIcon(icon: 'cooking', size: 200),
+              spacings.y.s32,
+              Text(
                 'login.title'.tr(),
-                style: const TextStyle(fontSize: 16),
+                style: baseTextStyle.h1,
               ),
-            ),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'login.alreadyHaveAccount'.tr(),
-                  style: baseTextStyle.h3,
+              spacings.y.s16,
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'login.email'.tr(),
+                  prefixIcon: const Icon(Icons.email),
+                  border: const OutlineInputBorder(),
                 ),
-                spacings.x.s5,
-                GestureDetector(
-                  onTap: goRegisterView,
-                  child: Text(
-                    'login.register'.tr(),
-                    style: baseTextStyle.h3.copyWith(
-                      color: Colors.blue,
+                controller: emailCtrl,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) =>
+                    ValidationService.validateEmail(value)?.tr(),
+              ),
+              spacings.y.s16,
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'login.password'.tr(),
+                  prefixIcon: const Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        obscurePassword = !obscurePassword;
+                      });
+                    },
+                    icon: SvgIcon(
+                      icon: !obscurePassword ? 'eye_open' : 'eye_closed',
                     ),
                   ),
+                  border: const OutlineInputBorder(),
                 ),
-              ],
-            ),
-          ],
+                controller: passwordCtrl,
+                obscureText: obscurePassword,
+                validator: (value) =>
+                    ValidationService.validatePassword(value)?.tr(),
+              ),
+              spacings.y.s8,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      router.pushNamed(Routes.forgotPassword.name);
+                    },
+                    child: Text(
+                      'login.forgotPassword'.tr(),
+                      style: baseTextStyle.h3.copyWith(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              spacings.y.s30,
+              ElevatedButton(
+                onPressed: () {
+                  login();
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: Text(
+                  'login.title'.tr(),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              spacings.y.s30,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'login.alreadyHaveAccount'.tr(),
+                    style: baseTextStyle.h3,
+                  ),
+                  spacings.x.s5,
+                  GestureDetector(
+                    onTap: goRegisterView,
+                    child: Text(
+                      'login.register'.tr(),
+                      style: baseTextStyle.h3.copyWith(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

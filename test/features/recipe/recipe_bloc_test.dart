@@ -1,3 +1,4 @@
+import 'package:cook_note/core/blocs/user_bloc.dart';
 import 'package:cook_note/core/models/recipe.dart';
 import 'package:cook_note/features/recipe/bloc/recipe_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,7 +12,8 @@ void main() {
 
     setUp(() {
       mockRepository = MockRecipeRepository();
-      recipeBloc = RecipeBloc(recipeRepository: mockRepository);
+      recipeBloc =
+          RecipeBloc(recipeRepository: mockRepository, userBloc: UserBloc());
     });
 
     tearDown(() {
@@ -34,7 +36,7 @@ void main() {
         );
 
         // Act
-        await recipeBloc.addRecipe(recipeDto);
+        await recipeBloc.addRecipe(recipeDto, null);
 
         // Assert
         // En un test real, verificarías que el mock fue llamado correctamente
@@ -55,7 +57,7 @@ void main() {
         );
 
         // Act
-        await recipeBloc.updateRecipe(recipeDto);
+        await recipeBloc.updateRecipe(recipeDto, null);
 
         // Assert
         // Verificar que el mock fue llamado correctamente

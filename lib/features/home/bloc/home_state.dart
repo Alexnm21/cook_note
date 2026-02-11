@@ -4,7 +4,7 @@ class HomeState {
   final HomePages currentPage;
 
   HomeState({
-    this.currentPage = HomePages.myRecipes,
+    this.currentPage = HomePages.diary,
   });
 
   HomeState copyWith({HomePages? currentPage}) {

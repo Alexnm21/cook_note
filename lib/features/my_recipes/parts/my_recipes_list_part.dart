@@ -7,15 +7,28 @@ class MyRecipesListPart extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RecipeListBloc, RecipeListState>(
         builder: (context, state) {
-      if (state.recipes.isEmpty) {
-        return const Text('No recipes found');
+      if (state.isLoading) {
+        return const Expanded(
+            child: Center(child: CircularProgressIndicator()));
       }
+      final filteredRecipes = state.filteredRecipes;
+
+      if (state.recipes.isEmpty) {
+        return Text('recipes.no_recipes'.tr());
+      }
+
+      if (filteredRecipes.isEmpty && state.searchText.isNotEmpty) {
+        return Text(
+            '${'recipes.no_recipes_matching'.tr()} "${state.searchText}"');
+      }
+
       return Expanded(
         child: ListView.builder(
           shrinkWrap: true,
-          itemCount: state.recipes.length,
+          padding: paddings.x.s16,
+          itemCount: filteredRecipes.length,
           itemBuilder: (context, index) {
-            return RecipeCard(recipe: state.recipes[index]);
+            return RecipeCard(recipe: filteredRecipes[index]);
           },
         ),
       );

@@ -16,7 +16,7 @@ class RecipeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        router.pushNamed(Routes.editRecipe.name, extra: recipe);
+        router.pushNamed(Routes.recipe.name, extra: recipe);
       },
       child: Card(
         margin: paddings.y.s12,
@@ -25,7 +25,7 @@ class RecipeCard extends StatelessWidget {
           children: [
             Stack(
               children: [
-                _Image(imageUrl: recipe.image!),
+                _Image(imageUrl: recipe.image ?? ''),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -135,7 +135,13 @@ class _Description extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          Text(recipe.occasion.first.name, style: baseTextStyle.h3),
+          Row(
+            children: recipe.occasions
+                .map((occasion) => Text(
+                    '${'recipe.occasion.${occasion.name}'.tr()} ',
+                    style: baseTextStyle.h3))
+                .toList(),
+          ),
           if (recipe.time != null)
             Text(
               '${recipe.time} ${'core.minutes'.tr().toLowerCase()}',

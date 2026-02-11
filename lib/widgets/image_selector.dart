@@ -7,12 +7,14 @@ import '../core/utils/image_utils.dart';
 
 class ImageSelector extends StatelessWidget {
   final File? imageFile;
+  final String imageUrl;
   final Function(File) onChange;
   final Function() onRemove;
 
   const ImageSelector({
     super.key,
     this.imageFile,
+    required this.imageUrl,
     required this.onChange,
     required this.onRemove,
   });
@@ -26,9 +28,10 @@ class ImageSelector extends StatelessWidget {
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(16),
         ),
-        child: imageFile != null
+        child: imageFile != null || imageUrl.isNotEmpty == true
             ? _ImageSelected(
-                imageFile: imageFile!,
+                imageFile: imageFile,
+                imageUrl: imageUrl,
                 onRemove: onRemove,
                 onChange: onChange,
               )
@@ -46,35 +49,42 @@ class _NoImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.image_outlined,
-          size: 48,
-          color: Colors.grey[600],
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'image.select'.tr(),
-          style: TextStyle(
+    return Container(
+      color: Colors.transparent,
+      width: double.infinity,
+      height: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.image_outlined,
+            size: 48,
             color: Colors.grey[600],
-            fontSize: 16,
           ),
-        ),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            'image.select'.tr(),
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class _ImageSelected extends StatelessWidget {
-  final File imageFile;
+  final File? imageFile;
+  final String imageUrl;
   final Function() onRemove;
   final Function(File) onChange;
   const _ImageSelected({
     required this.imageFile,
     required this.onRemove,
     required this.onChange,
+    required this.imageUrl,
   });
 
   @override
@@ -87,10 +97,15 @@ class _ImageSelected extends StatelessWidget {
           height: double.infinity,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: Image.file(
-              imageFile,
-              fit: BoxFit.cover,
-            ),
+            child: imageUrl.isNotEmpty
+                ? Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                  )
+                : Image.file(
+                    imageFile!,
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
         Positioned(

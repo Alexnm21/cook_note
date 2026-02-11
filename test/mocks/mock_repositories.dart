@@ -37,7 +37,7 @@ class MockRecipeRepository implements RecipeRepository {
   }
 
   @override
-  Future<void> updateRecipe(RecipeDto recipe) async {
+  Future<void> updateRecipe(RecipeDto recipe, {File? imageFile}) async {
     await Future.delayed(const Duration(milliseconds: 100));
     final index = _recipes.indexWhere((r) => r.id == recipe.id);
     if (index != -1) {
@@ -49,5 +49,11 @@ class MockRecipeRepository implements RecipeRepository {
   Future<void> deleteRecipe(String recipeId) async {
     await Future.delayed(const Duration(milliseconds: 100));
     _recipes.removeWhere((recipe) => recipe.id == recipeId);
+  }
+
+  @override
+  Stream<List<Recipe>> getRecipesStream(String userId) {
+    return Stream.value(
+        _recipes.where((recipe) => recipe.userId == userId).toList());
   }
 }

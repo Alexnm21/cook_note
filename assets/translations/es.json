@@ -3,7 +3,9 @@
         "name": "Nombre",
         "minutes": "Minutos",
         "image": "Imagen",
-        "accept": "Aceptar"
+        "accept": "Aceptar",
+        "search": "Buscar",
+        "logout": "Cerrar sesión"
         
     },
     "image":{
@@ -12,10 +14,16 @@
         "chooseFromGallery": "Elegir desde la galería"
     },
     "units": {
-        "cup": "Taza",
-        "tablespoon": "Cucharada",
+        "short": {
+            "gram": "g",
+            "milliliter": "ml",
+            "piece": "pieza",
+            "tablespoon": "cucharada"
+        },
         "gram": "Gramo",
-        "milliliter": "Mililitro"
+        "milliliter": "Mililitro",
+        "piece": "Pieza",
+        "tablespoon": "Cucharada"
     },
     "login":{
         "title": "Iniciar sesión",
@@ -48,18 +56,31 @@
     },
     "home": {
         "myRecipes": {
-        "title": "Mis recetas",
-        "newRecipe": "Nueva receta"
+            "title": "Mis recetas",
+            "newRecipe": "Nueva receta"
         },
-        "profile": "Perfil"
+        "profile": "Perfil",
+        "diary": {
+            "title": "Diario",
+            "greetings": {
+                "morning": "Buenos días",
+                "evening": "Buenas tardes",
+                "night": "Buenas noches"
+            },
+            "objective": "Objetivo",
+            "foods": "Comidas"
+
+        }
     },
+    
     "recipe": {
         "title": "Receta",
         "description": "Descripción",
-        "time": "Tiempo de cocción (minutos)",
+        "time": "Tiempo",
         "portions": "Porciones",
         "ingredients": "Ingredientes",
         "instructions": "Instrucciones",
+        "select": "Seleccionar receta",
         "difficulty": {
             "title": "Dificultad",
             "easy": "Fácil",
@@ -80,6 +101,7 @@
         "title": "Título",
         "time": "Tiempo",
         "description": "Descripción",
+        "macros": "Macronutrientes",
         "ingredient": "Ingrediente",
         "ingredientPlaceholder": "Ej: 1 cucharada de azúcar",
         "instructionPlaceholder": "Ej: Mezclar los ingredientes",
@@ -90,5 +112,59 @@
         "steps": "Pasos",
         "add_step": "Agregar paso",
         "required_field": "Campo requerido"
-    }
+    },
+    "macros": {
+        "calories": "Calorías",
+        "protein": "Proteína",
+        "carbs": "Carbohidratos",
+        "fat": "Grasa",
+        "calculate_with_ai": "Calcular con IA",
+        "success_calculate_with_ai": "Macros calculados exitosamente",
+        "error_calculate_with_ai": "Error al calcular los macros con IA"
+    },
+    "profile": {
+        "title": "Perfil",
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "save": "Guardar",
+        "edit": "Editar Perfil",
+        "personal_info": "Información Personal",
+        "physical_info": "Información Física",
+        "age": "Edad",
+        "gender": {
+            "title": "Género",
+            "male": "Masculino",
+            "female": "Femenino"
+        },
+        "height": "Altura",
+        "weight": "Peso",
+        "activity_level": {
+            "title": "Nivel de Actividad",
+            "sedentary": "Sedentario",
+            "light": "Ligero",
+            "moderate": "Moderado",
+            "active": "Activo",
+            "veryActive": "Muy activo"
+        },
+        "goals": "Objetivos",
+        "goal": {
+            "title": "Meta",
+            "loseWeight": "Perder peso",
+            "loseWeightHealthy": "Perder peso de forma saludable",
+            "maintainWeight": "Mantener peso",
+            "gainWeightHealthy": "Ganar peso de forma saludable",
+            "gainWeight": "Ganar peso"
+        },
+        "load_error": "Error al cargar el perfil"
+    },
+    "ingredients": {
+        "quantity": "Cantidad",
+        "unit": "Unidad"
+    },
+    "recipes": {
+        "no_recipes": "No se encontraron recetas",
+        "no_recipes_matching": "No se encontraron recetas que coincidan con"
+    },
+    "instructions": "Instrucciones"
 }

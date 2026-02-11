@@ -52,7 +52,7 @@ class BaseTextStyle {
   ///Color: Black,
   TextStyle h5 = GoogleFonts.inter(
     fontSize: BaseFontSize.m13,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w400,
     color: Colors.black,
   );
 

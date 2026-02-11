@@ -3,15 +3,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/enums/supabase_names.dart';
 import '../abstract/login_repository.dart';
+import 'base_supabase_repository.dart';
 
-class SupabaseLoginRepository implements LoginRepository {
+class SupabaseLoginRepository extends BaseSupabaseRepository
+    implements LoginRepository {
   static SupabaseLoginRepository? _instance;
 
-  final SupabaseClient supabase = Supabase.instance.client;
-  final String tableName = SupabaseNames.profiles.name;
-
   // Constructor privado para el singleton
-  SupabaseLoginRepository._internal();
+  SupabaseLoginRepository._internal() : super(SupabaseNames.profiles.name);
 
   /// Método factory que retorna la instancia única del repositorio
   factory SupabaseLoginRepository.instance() {
@@ -43,7 +42,7 @@ class SupabaseLoginRepository implements LoginRepository {
 
       // Solo insertar en profiles si el usuario fue creado exitosamente
       await supabase.from(tableName).insert({
-        'userId': authResponse.user!.id,
+        'user_id': authResponse.user!.id,
         'name': name,
       });
     } catch (e) {
