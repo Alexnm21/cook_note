@@ -136,10 +136,13 @@ class _MacrosFormPartState extends State<MacrosFormPart> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 2,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 2.8,
           children: Macros.values
               .map(
                 (macro) => _MacroInputField(
-                  macros: macro,
+                  macro: macro,
                   value: widget.macros?[macro] ?? 0.0,
                   onChanged: (value) {
                     final updatedMacros =
@@ -157,12 +160,12 @@ class _MacrosFormPartState extends State<MacrosFormPart> {
 }
 
 class _MacroInputField extends StatefulWidget {
-  final Macros macros;
+  final Macros macro;
   final double value;
   final Function(double) onChanged;
 
   const _MacroInputField({
-    required this.macros,
+    required this.macro,
     required this.value,
     required this.onChanged,
   });
@@ -207,51 +210,53 @@ class _MacroInputFieldState extends State<_MacroInputField> {
       margin: const EdgeInsets.only(bottom: 16.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: widget.macros.color.withValues(alpha: 0.1),
+        color: widget.macro.color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: widget.macros.color.withValues(alpha: 0.3),
+          color: widget.macro.color.withValues(alpha: 0.3),
           width: 1.5,
         ),
       ),
-      child: Column(
+      child: Row(
         children: [
-          Row(
-            children: [
-              // Icono del macro
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: widget.macros.color,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  widget.macros.icon,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 16),
-              // Nombre del macro
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.macros.text,
-                      style: baseTextStyle.h3.copyWith(
-                        color: widget.macros.color,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          // Icono del macro
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: widget.macro.color,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Icon(
+              widget.macro.icon,
+              color: Colors.white,
+              size: 20,
+            ),
           ),
-
+          const SizedBox(width: 16),
+          // Nombre del macro
+          Expanded(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.macro.text,
+                  style: baseTextStyle.h3.copyWith(
+                    color: widget.macro.color,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  _getUnit(widget.macro),
+                  style: baseTextStyle.body.copyWith(
+                    color: widget.macro.color.withValues(alpha: 0.7),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
           // Campo de entrada
           Expanded(
             flex: 1,
@@ -263,13 +268,34 @@ class _MacroInputFieldState extends State<_MacroInputField> {
               ],
               textAlign: TextAlign.center,
               style: baseTextStyle.h3.copyWith(
-                color: widget.macros.color,
+                color: widget.macro.color,
                 fontWeight: FontWeight.w600,
               ),
               decoration: InputDecoration(
                 hintText: '0',
                 hintStyle: baseTextStyle.h3.copyWith(
-                  color: widget.macros.color.withValues(alpha: 0.5),
+                  color: widget.macro.color.withValues(alpha: 0.5),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: widget.macro.color.withValues(alpha: 0.5),
+                    width: 1,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: widget.macro.color.withValues(alpha: 0.5),
+                    width: 1,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: widget.macro.color,
+                    width: 2,
+                  ),
                 ),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 8,
@@ -287,5 +313,16 @@ class _MacroInputFieldState extends State<_MacroInputField> {
         ],
       ),
     );
+  }
+
+  String _getUnit(Macros macro) {
+    switch (macro) {
+      case Macros.calories:
+        return 'kcal';
+      case Macros.protein:
+      case Macros.carbs:
+      case Macros.fat:
+        return 'g';
+    }
   }
 }

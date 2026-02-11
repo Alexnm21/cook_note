@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/enums/occasion.dart';
@@ -63,11 +63,11 @@ class RecipeListBloc extends Bloc<RecipeListEvent, RecipeListState> {
     });
   }
 
-  searchRecipes(String text) {
+  void searchRecipes(String text) {
     add(SearchRecipes(searchText: text));
   }
 
-  filterOccasion(Occasion? occasion) {
+  void filterOccasion(Occasion? occasion) {
     Occasion? filterOccasion = state.filterOccasion;
 
     if (filterOccasion == occasion) {
@@ -78,10 +78,9 @@ class RecipeListBloc extends Bloc<RecipeListEvent, RecipeListState> {
     add(FilterOccasion(filterOccasion: filterOccasion));
   }
 
-  addToRecentRecipes(Recipe recipe) async {
+  Future<void> addToRecentRecipes(Recipe recipe) async {
     await recentRecipesRepository.saveRecentRecipe(recipe);
-    List<Recipe> recentRecipes =
-        await recentRecipesRepository.getRecentRecipes();
+    final recentRecipes = await recentRecipesRepository.getRecentRecipes();
     add(SetRecentRecipes(recentRecipes: recentRecipes));
   }
 
