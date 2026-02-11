@@ -42,7 +42,7 @@ class MyRecipesView extends StatelessWidget {
             BlocBuilder<RecipeListBloc, RecipeListState>(
               builder: (context, state) {
                 return RecipeFilterSelectorPart(
-                  filterOccasions: state.filterOccasions,
+                  filterOccasion: state.filterOccasion,
                   onFilterOccasion: (occasion) {
                     context.read<RecipeListBloc>().filterOccasion(occasion);
                   },

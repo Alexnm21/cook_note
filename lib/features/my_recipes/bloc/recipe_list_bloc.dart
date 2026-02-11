@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/enums/occasion.dart';
@@ -31,8 +32,8 @@ class RecipeListBloc extends Bloc<RecipeListEvent, RecipeListState> {
       emit(state.copyWith(searchText: event.searchText));
     });
 
-    on<FilterOccasions>((event, emit) {
-      emit(state.copyWith(filterOccasions: event.filterOccasions));
+    on<FilterOccasion>((event, emit) {
+      emit(state.copyWith(filterOccasion: () => event.filterOccasion));
     });
 
     init();
@@ -60,14 +61,15 @@ class RecipeListBloc extends Bloc<RecipeListEvent, RecipeListState> {
     add(SearchRecipes(searchText: text));
   }
 
-  filterOccasion(Occasion occasion) {
-    Set<Occasion> occasionSet = {...state.filterOccasions};
-    if (occasionSet.contains(occasion)) {
-      occasionSet.remove(occasion);
+  filterOccasion(Occasion? occasion) {
+    Occasion? filterOccasion = state.filterOccasion;
+
+    if (filterOccasion == occasion) {
+      filterOccasion = null;
     } else {
-      occasionSet.add(occasion);
+      filterOccasion = occasion;
     }
-    add(FilterOccasions(filterOccasions: occasionSet));
+    add(FilterOccasion(filterOccasion: filterOccasion));
   }
 
   @override

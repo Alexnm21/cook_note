@@ -12,9 +12,9 @@ class SearchRecipes extends RecipeListEvent {
   SearchRecipes({required this.searchText});
 }
 
-class FilterOccasions extends RecipeListEvent {
-  final Set<Occasion> filterOccasions;
-  FilterOccasions({required this.filterOccasions});
+class FilterOccasion extends RecipeListEvent {
+  final Occasion? filterOccasion;
+  FilterOccasion({required this.filterOccasion});
 }
 
 class SetLoading extends RecipeListEvent {

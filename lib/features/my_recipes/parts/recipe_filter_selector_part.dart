@@ -1,11 +1,11 @@
 part of '../view/my_recipes_view.dart';
 
 class RecipeFilterSelectorPart extends StatelessWidget {
-  final Set<Occasion> filterOccasions;
-  final Function(Occasion) onFilterOccasion;
+  final Occasion? filterOccasion;
+  final Function(Occasion?) onFilterOccasion;
   const RecipeFilterSelectorPart({
     super.key,
-    required this.filterOccasions,
+    required this.filterOccasion,
     required this.onFilterOccasion,
   });
 
@@ -16,32 +16,38 @@ class RecipeFilterSelectorPart extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: paddings.x.s16,
-        children: Occasion.values
-            .map((e) => _FilterContainer(
-                occasion: e,
-                selected: filterOccasions.contains(e),
-                onFilterOccasion: onFilterOccasion))
-            .toList(),
+        children: [
+          _FilterContainer(
+              text: 'core.all'.tr(),
+              selected: filterOccasion == null,
+              onTap: () => onFilterOccasion(null)),
+          ...Occasion.values.map((occasion) {
+            return _FilterContainer(
+                text: 'recipe.occasion.${occasion.name}'.tr(),
+                selected: filterOccasion != null && filterOccasion == occasion,
+                onTap: () => onFilterOccasion(occasion));
+          })
+        ],
       ),
     );
   }
 }
 
 class _FilterContainer extends StatelessWidget {
-  final Occasion occasion;
   final bool selected;
-  final Function(Occasion) onFilterOccasion;
+  final Function() onTap;
+  final String text;
   final double borderRadius = 40;
   const _FilterContainer({
-    required this.occasion,
     required this.selected,
-    required this.onFilterOccasion,
+    required this.onTap,
+    required this.text,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onFilterOccasion(occasion),
+      onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         margin: paddings.x.s4,
@@ -50,7 +56,7 @@ class _FilterContainer extends StatelessWidget {
         alignment: Alignment.center,
         decoration: selected ? _selectedDecoration() : _unselectedDecoration(),
         child: Text(
-          'recipe.occasion.${occasion.name}'.tr(),
+          text,
           style: baseTextStyle.h3
               .copyWith(color: selected ? Colors.white : Colors.grey),
         ),

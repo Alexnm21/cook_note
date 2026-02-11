@@ -4,27 +4,25 @@ class RecipeListState {
   final bool isLoading;
   final List<Recipe> recipes;
   final String searchText;
-  final Set<Occasion> filterOccasions;
+  final Occasion? filterOccasion;
 
   RecipeListState({
     this.isLoading = true,
     required this.recipes,
     this.searchText = '',
-    this.filterOccasions = const {},
+    this.filterOccasion,
   });
 
   // Getter que calcula las recetas filtradas dinámicamente
   List<Recipe> get filteredRecipes {
-    if (searchText.isEmpty && filterOccasions.isEmpty) {
+    if (searchText.isEmpty && filterOccasion == null) {
       return recipes;
     }
     return recipes
         .where((recipe) =>
             recipe.name.toLowerCase().contains(searchText.toLowerCase()))
         .where((recipe) =>
-            filterOccasions.isEmpty ||
-            recipe.occasions
-                .any((occasion) => filterOccasions.contains(occasion)))
+            filterOccasion == null || recipe.occasions.contains(filterOccasion))
         .toList();
   }
 
@@ -32,13 +30,14 @@ class RecipeListState {
     bool? isLoading,
     List<Recipe>? recipes,
     String? searchText,
-    Set<Occasion>? filterOccasions,
+    ValueGetter<Occasion?>? filterOccasion,
   }) {
     return RecipeListState(
       isLoading: isLoading ?? this.isLoading,
       recipes: recipes ?? this.recipes,
       searchText: searchText ?? this.searchText,
-      filterOccasions: filterOccasions ?? this.filterOccasions,
+      filterOccasion:
+          filterOccasion != null ? filterOccasion() : this.filterOccasion,
     );
   }
 }

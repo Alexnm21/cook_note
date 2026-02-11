@@ -5,7 +5,8 @@
         "image": "Imagen",
         "accept": "Aceptar",
         "search": "Buscar",
-        "logout": "Cerrar sesión"
+        "logout": "Cerrar sesión",
+        "all": "Todos"
         
     },
     "image":{
@@ -69,7 +70,6 @@
             },
             "objective": "Objetivo",
             "foods": "Comidas"
-
         }
     },
     
