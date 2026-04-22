@@ -50,7 +50,7 @@ class BaseTextStyle {
   ///FontSize: 13,
   ///FontWeight: w600,
   ///Color: Black,
-  TextStyle h5 = GoogleFonts.inter(
+  TextStyle h4 = GoogleFonts.inter(
     fontSize: BaseFontSize.m13,
     fontWeight: FontWeight.w400,
     color: Colors.black,

@@ -31,13 +31,13 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       floatingLabelStyle: baseTextStyle.h3.copyWith(color: Colors.black),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: const BorderSide(color: AppColors.primary),
-      ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15),
         borderSide: const BorderSide(color: AppColors.primary, width: 2),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: const BorderSide(color: AppColors.borderLight, width: 1),
       ),
     ),
     checkboxTheme: CheckboxThemeData(
@@ -54,6 +54,12 @@ class AppTheme {
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: AppColors.primary,
+    ),
+    listTileTheme: ListTileThemeData(
+      tileColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
     ),
   );
 }

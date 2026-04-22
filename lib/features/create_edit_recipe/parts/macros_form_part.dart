@@ -132,28 +132,37 @@ class _MacrosFormPartState extends State<MacrosFormPart> {
           },
         ),
         spacings.y.s10,
-        ...Macros.values.map((macro) => _MacroInputField(
-              macro: macro,
-              value: widget.macros?[macro] ?? 0.0,
-              onChanged: (value) {
-                final updatedMacros =
-                    Map<Macros, double>.from(widget.macros ?? {});
-                updatedMacros[macro] = value;
-                widget.onChanged(updatedMacros);
-              },
-            )),
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          children: Macros.values
+              .map(
+                (macro) => _MacroInputField(
+                  macros: macro,
+                  value: widget.macros?[macro] ?? 0.0,
+                  onChanged: (value) {
+                    final updatedMacros =
+                        Map<Macros, double>.from(widget.macros ?? {});
+                    updatedMacros[macro] = value;
+                    widget.onChanged(updatedMacros);
+                  },
+                ),
+              )
+              .toList(),
+        ),
       ],
     );
   }
 }
 
 class _MacroInputField extends StatefulWidget {
-  final Macros macro;
+  final Macros macros;
   final double value;
   final Function(double) onChanged;
 
   const _MacroInputField({
-    required this.macro,
+    required this.macros,
     required this.value,
     required this.onChanged,
   });
@@ -198,53 +207,51 @@ class _MacroInputFieldState extends State<_MacroInputField> {
       margin: const EdgeInsets.only(bottom: 16.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: widget.macro.color.withOpacity(0.1),
+        color: widget.macros.color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: widget.macro.color.withOpacity(0.3),
+          color: widget.macros.color.withOpacity(0.3),
           width: 1.5,
         ),
       ),
-      child: Row(
+      child: Column(
         children: [
-          // Icono del macro
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: widget.macro.color,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Icon(
-              widget.macro.icon,
-              color: Colors.white,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 16),
-          // Nombre del macro
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.macro.text,
-                  style: baseTextStyle.h3.copyWith(
-                    color: widget.macro.color,
-                    fontWeight: FontWeight.w600,
-                  ),
+          Row(
+            children: [
+              // Icono del macro
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: widget.macros.color,
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                Text(
-                  _getUnit(widget.macro),
-                  style: baseTextStyle.body.copyWith(
-                    color: widget.macro.color.withOpacity(0.7),
-                    fontSize: 12,
-                  ),
+                child: Icon(
+                  widget.macros.icon,
+                  color: Colors.white,
+                  size: 20,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 16),
+              // Nombre del macro
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.macros.text,
+                      style: baseTextStyle.h3.copyWith(
+                        color: widget.macros.color,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
+
           // Campo de entrada
           Expanded(
             flex: 1,
@@ -256,35 +263,35 @@ class _MacroInputFieldState extends State<_MacroInputField> {
               ],
               textAlign: TextAlign.center,
               style: baseTextStyle.h3.copyWith(
-                color: widget.macro.color,
+                color: widget.macros.color,
                 fontWeight: FontWeight.w600,
               ),
               decoration: InputDecoration(
                 hintText: '0',
                 hintStyle: baseTextStyle.h3.copyWith(
-                  color: widget.macro.color.withOpacity(0.5),
+                  color: widget.macros.color.withOpacity(0.5),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: widget.macro.color.withOpacity(0.5),
-                    width: 1,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: widget.macro.color.withOpacity(0.5),
-                    width: 1,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: widget.macro.color,
-                    width: 2,
-                  ),
-                ),
+                // border: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(8),
+                //   borderSide: BorderSide(
+                //     color: widget.macros.color.withOpacity(0.5),
+                //     width: 1,
+                //   ),
+                // ),
+                // enabledBorder: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(8),
+                //   borderSide: BorderSide(
+                //     color: widget.macros.color.withOpacity(0.5),
+                //     width: 1,
+                //   ),
+                // ),
+                // focusedBorder: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(8),
+                //   borderSide: BorderSide(
+                //     color: widget.macros.color,
+                //     width: 2,
+                //   ),
+                // ),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 8,
                   vertical: 12,

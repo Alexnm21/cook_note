@@ -6,11 +6,8 @@ class RecipeMacrosPart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final horizontalMargin = screenWidth / 5;
-
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: horizontalMargin, vertical: 10),
+    return Padding(
+      padding: paddings.all.s16,
       child: GridView.count(
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
@@ -18,27 +15,23 @@ class RecipeMacrosPart extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        childAspectRatio: 1,
+        childAspectRatio: 1.5,
         children: [
           _MacroItem(
-            label: 'macros.calories'.tr(),
+            macros: Macros.calories,
             value: '${recipe.calories.round()}',
-            icon: 'calories',
           ),
           _MacroItem(
-            label: 'macros.protein'.tr(),
+            macros: Macros.protein,
             value: '${recipe.protein.round()} g',
-            icon: 'protein',
           ),
           _MacroItem(
-            label: 'macros.carbs'.tr(),
+            macros: Macros.carbs,
             value: '${recipe.carbs.round()} g',
-            icon: 'carbs',
           ),
           _MacroItem(
-            label: 'macros.fat'.tr(),
+            macros: Macros.fat,
             value: '${recipe.fat.round().toString()} g',
-            icon: 'fat',
           ),
         ],
       ),
@@ -47,23 +40,22 @@ class RecipeMacrosPart extends StatelessWidget {
 }
 
 class _MacroItem extends StatelessWidget {
-  final String label;
+  final Macros macros;
   final String value;
-  final String icon;
 
-  const _MacroItem(
-      {required this.label, required this.value, required this.icon});
+  const _MacroItem({required this.macros, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: paddings.all.s8,
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: macros.color.withOpacity(0.3),
         borderRadius: BorderRadius.circular(BaseRadius.l),
+        border: Border.all(color: macros.color, width: 1),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
+            color: Colors.white.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 7),
           ),
@@ -72,19 +64,18 @@ class _MacroItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgIcon(icon: icon, size: 34, color: Colors.white),
+          Text(
+            macros.text.toUpperCase(),
+            style: baseTextStyle.h3.copyWith(color: macros.color),
+            overflow: TextOverflow.ellipsis,
+          ),
           spacings.y.s4,
           Text(
             value,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-          ),
-          Text(
-            label,
-            style: baseTextStyle.h3.copyWith(color: Colors.white),
-            overflow: TextOverflow.ellipsis,
+            style: baseTextStyle.h2.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ],
       ),

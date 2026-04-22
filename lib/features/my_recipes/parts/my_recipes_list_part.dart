@@ -23,13 +23,28 @@ class MyRecipesListPart extends StatelessWidget {
       }
 
       return Expanded(
-        child: ListView.builder(
-          shrinkWrap: true,
-          padding: paddings.x.s16,
-          itemCount: filteredRecipes.length,
-          itemBuilder: (context, index) {
-            return RecipeCard(recipe: filteredRecipes[index]);
-          },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: paddings.x.s16,
+              child: Text('home.myRecipes.title'.tr(),
+                  style: baseTextStyle.h2.copyWith(
+                    fontWeight: FontWeight.w700,
+                  )),
+            ),
+            spacings.y.s4,
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: paddings.x.s16,
+                itemCount: filteredRecipes.length,
+                itemBuilder: (context, index) {
+                  return RecipeListTile(recipe: filteredRecipes[index]);
+                },
+              ),
+            ),
+          ],
         ),
       );
     });

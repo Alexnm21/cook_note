@@ -7,10 +7,13 @@ import '../config/theme/styles/base_spaces.dart';
 import '../config/theme/styles/base_text_style.dart';
 import '../core/models/recipe.dart';
 import 'svg_icon.dart';
+import 'url_image.dart';
 
 class RecipeCard extends StatelessWidget {
   final Recipe recipe;
-  const RecipeCard({super.key, required this.recipe});
+  final double? width;
+  final double borderRadius = 30;
+  const RecipeCard({super.key, required this.recipe, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -18,101 +21,65 @@ class RecipeCard extends StatelessWidget {
       onTap: () {
         router.pushNamed(Routes.recipe.name, extra: recipe);
       },
-      child: Card(
-        margin: paddings.y.s12,
+      child: Container(
+        margin: paddings.all.s10,
+        width: width,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(borderRadius),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 4,
+                offset: const Offset(0, 2))
+          ],
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
-                _Image(imageUrl: recipe.image ?? ''),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black.withOpacity(0.2),
-                        Colors.transparent,
-                        Colors.transparent,
-                      ],
-                    ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
-                    ),
+                UrlImage(
+                  imageUrl: recipe.image ?? '',
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(borderRadius),
+                    topRight: Radius.circular(borderRadius),
                   ),
-                  width: double.infinity,
-                  height: 200,
                 ),
                 Positioned(
                     top: 10,
                     right: 15,
-                    child: Row(
-                      children: [
-                        const SvgIcon(
-                          icon: "time",
-                          color: Colors.white,
-                        ),
-                        spacings.x.s2,
-                        Text(
-                          '${recipe.time}',
-                          style: baseTextStyle.h3.copyWith(color: Colors.white),
-                        ),
-                        spacings.x.s8,
-                        const SvgIcon(
-                          icon: "ingredients",
-                          color: Colors.white,
-                        ),
-                        spacings.x.s2,
-                        Text(
-                          '${recipe.ingredients.length}',
-                          style: baseTextStyle.h3.copyWith(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(
+                            30,
+                          )),
+                      child: Row(
+                        children: [
+                          const SvgIcon(
+                            icon: "time",
                             color: Colors.white,
+                            size: 15,
                           ),
-                        ),
-                      ],
+                          spacings.x.s2,
+                          Text(
+                            '${recipe.time} min',
+                            style:
+                                baseTextStyle.h4.copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
                     )),
               ],
             ),
             _Description(recipe: recipe),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _Image extends StatelessWidget {
-  final String imageUrl;
-  const _Image({required this.imageUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-        child: imageUrl.isEmpty
-            ? Container(
-                padding: paddings.all.s32,
-                color: AppColors.primary,
-                child: const SvgIcon(
-                  icon: "food",
-                  color: Colors.white,
-                ),
-              )
-            : Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                errorBuilder: (context, error, stackTrace) {
-                  return const SvgIcon(icon: "error");
-                },
-              ),
       ),
     );
   }
@@ -128,27 +95,50 @@ class _Description extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             recipe.name,
             style: baseTextStyle.h3.copyWith(
               fontWeight: FontWeight.bold,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           Row(
-            children: recipe.occasions
-                .map((occasion) => Text(
-                    '${'recipe.occasion.${occasion.name}'.tr()} ',
-                    style: baseTextStyle.h3))
-                .toList(),
+            children: [
+              // ...recipe.occasions.map(
+              //   (occasion) => Text(
+              //       '${'recipe.occasion.${occasion.name}'.tr()} ',
+              //       style: _textStyle(),
+              //       overflow: TextOverflow.ellipsis),
+              // ),
+              // spacings.x.s2,
+              // Text('·', style: _textStyle()),
+              // spacings.x.s2,
+              // Text(
+              //   '${recipe.calories} kcal',
+              //   style: _textStyle(),
+              //   overflow: TextOverflow.ellipsis,
+              // ),
+              Flexible(
+                child: Text(
+                  '${recipe.occasions.map(
+                    (occasion) => '${'recipe.occasion.${occasion.name}'.tr()} ',
+                  )}'
+                  '${recipe.calories} kcal',
+                  style: _textStyle(),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
-          if (recipe.time != null)
-            Text(
-              '${recipe.time} ${'core.minutes'.tr().toLowerCase()}',
-              style: baseTextStyle.h3,
-            ),
         ],
       ),
     );
+  }
+
+  TextStyle _textStyle() {
+    return baseTextStyle.h3
+        .copyWith(color: AppColors.textLight, fontWeight: FontWeight.w500);
   }
 }

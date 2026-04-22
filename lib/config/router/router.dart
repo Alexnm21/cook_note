@@ -9,6 +9,7 @@ import '../../main_app.dart';
 import '../../pages/create_edit_recipe_page.dart';
 import '../../pages/edit_profile_page.dart';
 import '../../pages/forgot_password_page.dart';
+import '../../pages/recent_recipes_page.dart';
 import '../../pages/recipe_page.dart';
 
 enum Routes {
@@ -18,6 +19,7 @@ enum Routes {
   forgotPassword,
   recipe,
   editProfile,
+  recentRecipes,
 }
 
 final router = GoRouter(
@@ -66,6 +68,11 @@ final router = GoRouter(
           builder: (context, state) => EditProfilePage(
             profile: state.extra as Profile,
           ),
+        ),
+        GoRoute(
+          path: '/recentRecipes',
+          name: Routes.recentRecipes.name,
+          builder: (context, state) => RecentRecipesPage(),
         ),
       ],
     ),

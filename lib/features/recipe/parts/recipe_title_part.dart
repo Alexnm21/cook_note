@@ -40,7 +40,7 @@ class RecipeTitlePart extends StatelessWidget {
           spacings.y.s12,
           Text(
             recipe.description ?? '',
-            style: baseTextStyle.h5.copyWith(color: Colors.blueGrey),
+            style: baseTextStyle.h4.copyWith(color: Colors.blueGrey),
           ),
         ],
       ),

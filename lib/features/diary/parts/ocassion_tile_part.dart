@@ -38,6 +38,7 @@ class _OcassionTilePartState extends State<OcassionTilePart> {
                     recipe: selectedRecipe,
                   ),
                 );
+            context.read<RecipeListBloc>().addToRecentRecipes(selectedRecipe);
           },
         ),
       ),

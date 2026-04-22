@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../config/theme/app_colors.dart';
 import '../core/utils/image_utils.dart';
 
 class ImageSelector extends StatelessWidget {
@@ -25,7 +26,6 @@ class ImageSelector extends StatelessWidget {
         width: double.infinity,
         height: 200,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(16),
         ),
         child: imageFile != null || imageUrl.isNotEmpty == true
@@ -50,7 +50,14 @@ class _NoImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.transparent,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.borderLight,
+          width: 2,
+        ),
+        color: AppColors.imageSelectionBackground,
+      ),
       width: double.infinity,
       height: double.infinity,
       child: Column(

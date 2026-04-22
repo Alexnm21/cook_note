@@ -26,9 +26,8 @@ part '../parts/difficulty_selector_part.dart';
 part '../parts/ingredient_list_form_part.dart';
 part '../parts/macros_form_part.dart';
 part '../parts/occasion_selector_part.dart';
-part '../parts/portion_selector_part.dart';
 part '../parts/steps_list_form_part.dart';
-part '../parts/time_form_part.dart';
+part '../parts/value_modifier_part.dart';
 
 class RecipeForm extends StatefulWidget {
   final Recipe? updateRecipe;
@@ -104,6 +103,7 @@ class RecipeFormState extends State<RecipeForm> {
                 }
                 return null;
               },
+              hint: 'recipe_form.title_hint'.tr(),
             ),
 
             spacings.y.s30,
@@ -136,17 +136,44 @@ class RecipeFormState extends State<RecipeForm> {
               initialValue: widget.updateRecipe?.description,
               maxLines: 3,
               title: 'recipe_form.description'.tr(),
+              hint: 'recipe_form.description_hint'.tr(),
             ),
 
             spacings.y.s30,
-
-            PortionSelectorPart(
-              portions: recipe.portions ?? 1,
-              onChanged: (value) {
-                setState(() {
-                  recipe.portions = value;
-                });
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ValueModifierPart(
+                  title: 'recipe.portions'.tr(),
+                  value: recipe.portions ?? 1,
+                  add: () {
+                    setState(() {
+                      recipe.portions = (recipe.portions ?? 1) + 1;
+                    });
+                  },
+                  subtract: () {
+                    if (recipe.portions! - 1 < 0) return;
+                    setState(() {
+                      recipe.portions = (recipe.portions ?? 1) - 1;
+                    });
+                  },
+                ),
+                ValueModifierPart(
+                  title: 'recipe_form.time'.tr(),
+                  value: recipe.time ?? 0,
+                  add: () {
+                    setState(() {
+                      recipe.time = (recipe.time ?? 0) + 5;
+                    });
+                  },
+                  subtract: () {
+                    if (recipe.time! - 5 < 0) return;
+                    setState(() {
+                      recipe.time = (recipe.time ?? 0) - 5;
+                    });
+                  },
+                ),
+              ],
             ),
 
             spacings.y.s30,
@@ -164,17 +191,6 @@ class RecipeFormState extends State<RecipeForm> {
               onChanged: (value) {
                 setState(() {
                   macros = value;
-                });
-              },
-            ),
-
-            spacings.y.s30,
-
-            TimeFormPart(
-              time: recipe.time ?? 0,
-              onChanged: (value) {
-                setState(() {
-                  recipe.time = value;
                 });
               },
             ),

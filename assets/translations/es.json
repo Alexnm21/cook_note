@@ -70,6 +70,10 @@
             },
             "objective": "Objetivo",
             "foods": "Comidas"
+        },
+        "recentRecipes": {
+            "title": "Recientes",
+            "viewAll": "Ver todas"
         }
     },
     
@@ -111,7 +115,10 @@
         "success": "Receta guardada con éxito",
         "steps": "Pasos",
         "add_step": "Agregar paso",
-        "required_field": "Campo requerido"
+        "required_field": "Campo requerido",
+        "title_hint": "Ej: Tarta de manzana",
+        "description_hint": "Describe brevemente tu creación"
+        
     },
     "macros": {
         "calories": "Calorías",

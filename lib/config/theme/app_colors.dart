@@ -12,4 +12,9 @@ class AppColors {
   static const Color fat = Color(0xFF4CAF50);
 
   static const Color background = Color(0xFFF9FAFB);
+  static const Color formBackground = Color(0xFFF9FAFC);
+  static const Color text = Color(0xFF000000);
+  static const Color textLight = Color(0xFF64748B);
+  static const Color borderLight = Color(0xFFE2E8EF);
+  static const Color imageSelectionBackground = Color(0xFFF1F5F9);
 }

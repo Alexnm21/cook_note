@@ -6,6 +6,7 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/styles/base_radius.dart';
 import '../../../config/theme/styles/base_spaces.dart';
 import '../../../config/theme/styles/base_text_style.dart';
+import '../../../core/enums/enums.dart';
 import '../../../core/models/recipe.dart';
 import '../../../widgets/svg_icon.dart';
 

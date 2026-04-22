@@ -21,3 +21,8 @@ class SetLoading extends RecipeListEvent {
   final bool isLoading;
   SetLoading({required this.isLoading});
 }
+
+class SetRecentRecipes extends RecipeListEvent {
+  final List<Recipe> recentRecipes;
+  SetRecentRecipes({required this.recentRecipes});
+}

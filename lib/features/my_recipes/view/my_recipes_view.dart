@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../config/router/router.dart';
 import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/styles/base_spaces.dart';
 import '../../../config/theme/styles/base_text_style.dart';
 import '../../../core/enums/occasion.dart';
+import '../../../core/extensions/build_context_extension.dart';
+import '../../../core/models/recipe.dart';
 import '../../../widgets/recipe_card.dart';
+import '../../../widgets/recipe_list_tile.dart';
 import '../../../widgets/svg_icon.dart';
 import '../bloc/recipe_list_bloc.dart';
 
 part '../parts/my_recipes_list_part.dart';
+part '../parts/recent_recipes_part.dart';
 part '../parts/recipe_filter_selector_part.dart';
 
 class MyRecipesView extends StatelessWidget {
@@ -50,7 +55,9 @@ class MyRecipesView extends StatelessWidget {
               },
             ),
             spacings.y.s24,
+            const RecentRecipesPart(),
             const MyRecipesListPart(),
+            spacings.y.s12,
           ],
         ),
         floatingActionButton: FloatingActionButton(

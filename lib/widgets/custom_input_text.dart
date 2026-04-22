@@ -9,7 +9,7 @@ class CustomInputText extends StatelessWidget {
   final Widget? icon;
   final String? initialValue;
   final int? maxLines;
-
+  final String? hint;
   final String? Function(String?)? validator;
 
   const CustomInputText({
@@ -20,6 +20,7 @@ class CustomInputText extends StatelessWidget {
     this.validator,
     this.initialValue,
     this.maxLines,
+    this.hint,
   });
 
   @override
@@ -43,6 +44,10 @@ class CustomInputText extends StatelessWidget {
           validator: validator,
           initialValue: initialValue,
           maxLines: maxLines,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: baseTextStyle.h3.copyWith(color: AppColors.textLight),
+          ),
         ),
       ],
     );

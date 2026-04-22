@@ -35,13 +35,14 @@ class SingleSelectionRecipeDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(BaseRadius.s),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             BlocBuilder<RecipeListBloc, RecipeListState>(
               builder: (context, state) {
                 final List<Recipe> recipeList = state.recipes
                     .where((r) => r.occasions.contains(occasion))
                     .toList();
-                return Expanded(
+                return Flexible(
                   child: ListView.separated(
                     shrinkWrap: true,
                     itemBuilder: (context, index) => _RecipeItem(

@@ -95,7 +95,7 @@ class Recipe {
     );
   }
 
-  factory Recipe.fromMap(Map<String, dynamic> map) {
+  factory Recipe.fromMap(Map<dynamic, dynamic> map) {
     List<dynamic> ingredients = map['ingredients'] ?? [];
     List<dynamic> steps = map['steps'] ?? [];
     List<dynamic> occasion = map['occasion'] ?? [];
