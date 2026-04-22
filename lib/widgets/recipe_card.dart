@@ -122,10 +122,7 @@ class _Description extends StatelessWidget {
               // ),
               Flexible(
                 child: Text(
-                  '${recipe.occasions.map(
-                    (occasion) => '${'recipe.occasion.${occasion.name}'.tr()} ',
-                  )}'
-                  '${recipe.calories} kcal',
+                  _getSubtitle(),
                   style: _textStyle(),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -140,5 +137,14 @@ class _Description extends StatelessWidget {
   TextStyle _textStyle() {
     return baseTextStyle.h3
         .copyWith(color: AppColors.textLight, fontWeight: FontWeight.w500);
+  }
+
+  String _getSubtitle() {
+    String text = '${recipe.calories} kcal ';
+    if (recipe.occasions.isEmpty) return text;
+    text +=
+        '(${recipe.occasions.map((occasion) => 'recipe.occasion.${occasion.name}'.tr()).join(', ')}) ';
+
+    return text;
   }
 }
