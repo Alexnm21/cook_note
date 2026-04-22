@@ -26,7 +26,6 @@ part '../parts/difficulty_selector_part.dart';
 part '../parts/ingredient_list_form_part.dart';
 part '../parts/macros_form_part.dart';
 part '../parts/occasion_selector_part.dart';
-part '../parts/portion_selector_part.dart';
 part '../parts/steps_list_form_part.dart';
 part '../parts/value_modifier_part.dart';
 

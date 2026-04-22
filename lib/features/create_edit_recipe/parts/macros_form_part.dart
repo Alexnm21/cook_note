@@ -219,7 +219,6 @@ class _MacroInputFieldState extends State<_MacroInputField> {
       ),
       child: Row(
         children: [
-          // Icono del macro
           Container(
             width: 40,
             height: 40,
@@ -234,7 +233,6 @@ class _MacroInputFieldState extends State<_MacroInputField> {
             ),
           ),
           const SizedBox(width: 16),
-          // Nombre del macro
           Expanded(
             flex: 2,
             child: Column(
@@ -257,7 +255,6 @@ class _MacroInputFieldState extends State<_MacroInputField> {
               ],
             ),
           ),
-          // Campo de entrada
           Expanded(
             flex: 1,
             child: TextFormField(
