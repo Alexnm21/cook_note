@@ -72,7 +72,7 @@ final router = GoRouter(
         GoRoute(
           path: '/recentRecipes',
           name: Routes.recentRecipes.name,
-          builder: (context, state) => RecentRecipesPage(),
+          builder: (context, state) => const RecentRecipesPage(),
         ),
       ],
     ),

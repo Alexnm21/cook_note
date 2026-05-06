@@ -50,8 +50,9 @@ class _DifficultyContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color borderColor = isSelected ? Colors.black : Colors.grey;
-    Color backgroundColor =
-        isSelected ? AppColors.primary.withOpacity(0.3) : Colors.transparent;
+    Color backgroundColor = isSelected
+        ? AppColors.primary.withValues(alpha: 0.3)
+        : Colors.transparent;
     Color textColor = isSelected ? Colors.black : Colors.grey;
     return Expanded(
       child: GestureDetector(

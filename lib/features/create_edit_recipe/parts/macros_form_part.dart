@@ -207,10 +207,10 @@ class _MacroInputFieldState extends State<_MacroInputField> {
       margin: const EdgeInsets.only(bottom: 16.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: widget.macros.color.withOpacity(0.1),
+        color: widget.macros.color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: widget.macros.color.withOpacity(0.3),
+          color: widget.macros.color.withValues(alpha: 0.3),
           width: 1.5,
         ),
       ),
@@ -269,29 +269,8 @@ class _MacroInputFieldState extends State<_MacroInputField> {
               decoration: InputDecoration(
                 hintText: '0',
                 hintStyle: baseTextStyle.h3.copyWith(
-                  color: widget.macros.color.withOpacity(0.5),
+                  color: widget.macros.color.withValues(alpha: 0.5),
                 ),
-                // border: OutlineInputBorder(
-                //   borderRadius: BorderRadius.circular(8),
-                //   borderSide: BorderSide(
-                //     color: widget.macros.color.withOpacity(0.5),
-                //     width: 1,
-                //   ),
-                // ),
-                // enabledBorder: OutlineInputBorder(
-                //   borderRadius: BorderRadius.circular(8),
-                //   borderSide: BorderSide(
-                //     color: widget.macros.color.withOpacity(0.5),
-                //     width: 1,
-                //   ),
-                // ),
-                // focusedBorder: OutlineInputBorder(
-                //   borderRadius: BorderRadius.circular(8),
-                //   borderSide: BorderSide(
-                //     color: widget.macros.color,
-                //     width: 2,
-                //   ),
-                // ),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 8,
                   vertical: 12,
@@ -308,16 +287,5 @@ class _MacroInputFieldState extends State<_MacroInputField> {
         ],
       ),
     );
-  }
-
-  String _getUnit(Macros macro) {
-    switch (macro) {
-      case Macros.calories:
-        return 'kcal';
-      case Macros.protein:
-      case Macros.carbs:
-      case Macros.fat:
-        return 'g';
-    }
   }
 }

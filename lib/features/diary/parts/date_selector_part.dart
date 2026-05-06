@@ -68,7 +68,7 @@ class _DayButton extends StatelessWidget {
                 padding: paddings.all.s4,
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? Colors.black.withOpacity(0.2)
+                      ? Colors.black.withValues(alpha: 0.2)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(BaseRadius.circle),
                 ),

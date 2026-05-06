@@ -114,7 +114,7 @@ class _RecipeItem extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      splashColor: Colors.grey.withOpacity(0.2),
+      splashColor: Colors.grey.withValues(alpha: 0.2),
       subtitle: Text('${recipe.calories.round()} kcal'),
       onTap: onSelected,
     );

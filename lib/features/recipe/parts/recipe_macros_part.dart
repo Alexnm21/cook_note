@@ -50,12 +50,12 @@ class _MacroItem extends StatelessWidget {
     return Container(
       padding: paddings.all.s8,
       decoration: BoxDecoration(
-        color: macros.color.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(BaseRadius.l),
+        color: macros.color.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(BaseRadius.m),
         border: Border.all(color: macros.color, width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 7),
           ),

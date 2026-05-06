@@ -24,7 +24,7 @@ class EditProfileView extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.secondary,
         borderRadius: BorderRadius.circular(BaseRadius.m),
-        border: Border.all(color: AppColors.primary.withOpacity(0.1)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
       ),
       child: BlocBuilder<EditProfileBloc, EditProfileState>(
         builder: (context, state) {

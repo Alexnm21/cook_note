@@ -22,7 +22,7 @@ class RecipeListTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -71,7 +71,7 @@ class RecipeListTile extends StatelessWidget {
 
 class _BasicInfo extends StatelessWidget {
   final Recipe recipe;
-  const _BasicInfo({super.key, required this.recipe});
+  const _BasicInfo({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class _MacrosChip extends StatelessWidget {
       margin: paddings.x.s2,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-        color: macros.color.withOpacity(0.2),
+        color: macros.color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Row(

@@ -9,7 +9,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColors.background,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppColors.primary,
-      selectionColor: AppColors.primary.withOpacity(0.5),
+      selectionColor: AppColors.primary.withValues(alpha: 0.5),
       selectionHandleColor: AppColors.primary,
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(

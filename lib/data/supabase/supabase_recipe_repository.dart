@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import '../../core/enums/supabase_names.dart';
@@ -129,7 +130,7 @@ class SupabaseRecipeRepository extends BaseSupabaseRepository
         try {
           await supabase.storage.from(bucketName).remove([recipe.image!]);
         } catch (e) {
-          print('Error al eliminar imagen: $e');
+          log('Error al eliminar imagen: $e');
         }
       }
     }
