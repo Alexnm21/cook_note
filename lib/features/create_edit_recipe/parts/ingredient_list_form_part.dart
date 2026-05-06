@@ -145,7 +145,7 @@ class _IngredientRow extends StatelessWidget {
             Expanded(
               flex: 2,
               child: DropdownButtonFormField<Unit>(
-                value: ingredient.unit,
+                initialValue: ingredient.unit,
                 decoration: InputDecoration(
                   labelText: 'ingredients.unit'.tr(),
                 ),
