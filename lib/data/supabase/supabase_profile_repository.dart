@@ -27,7 +27,6 @@ class SupabaseProfileRepository extends BaseSupabaseRepository
     if (profile.id == null) {
       throw Exception('Profile ID is null');
     }
-
     await supabase
         .from(tableName)
         .update(profile.toMap())
