@@ -40,6 +40,5 @@ void main() {
       expect(find.text('Guardar receta'), findsOneWidget);
       expect(find.byType(TextFormField), findsWidgets);
     });
-
   });
 }
