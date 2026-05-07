@@ -41,6 +41,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
   }
 
+  String getUserId() {
+    if (state is UserLoggedIn) {
+      return (state as UserLoggedIn).user.id;
+    }
+    throw Exception('User not logged in');
+  }
+
+  String getUsername() {
+    if (state is UserLoggedIn) {
+      return (state as UserLoggedIn).user.email ?? '';
+    }
+    throw Exception('User not logged in');
+  }
+
+  void logout() {
+    add(LoggedOut());
+    Supabase.instance.client.auth.signOut();
+  }
+
   @override
   Future<void> close() {
     authSubscription.cancel();

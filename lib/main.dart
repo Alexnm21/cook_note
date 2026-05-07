@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'config/env/env.dart';
@@ -10,6 +12,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseKey);
   await EasyLocalization.ensureInitialized();
+  await Hive.initFlutter();
+  Gemini.init(apiKey: Env.geminiApiKey);
 
   runApp(
     EasyLocalization(
@@ -29,6 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: router,
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

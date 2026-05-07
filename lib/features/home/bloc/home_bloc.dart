@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../diary/view/diary_view.dart';
 import '../../my_recipes/view/my_recipes_view.dart';
 import '../../profile/view/profile_view.dart';
 
@@ -8,6 +9,7 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 enum HomePages {
+  diary("home.diary.title", "diary", DiaryView()),
   myRecipes("home.myRecipes.title", "recipe", MyRecipesView()),
   profile("home.profile", "profile", ProfileView());
 
