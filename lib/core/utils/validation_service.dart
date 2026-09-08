@@ -31,4 +31,15 @@ class ValidationService {
     }
     return null;
   }
+
+  static String? validatePositiveInt(String? value, {int max = 999}) {
+    final parsed = int.tryParse(value?.trim() ?? '');
+    if (parsed == null || parsed <= 0) {
+      return 'validation.invalid_number';
+    }
+    if (parsed > max) {
+      return 'validation.invalid_number';
+    }
+    return null;
+  }
 }

@@ -28,7 +28,23 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     add(SetProfile(profile: profile));
   }
 
-  updateProfile() async {
-    await profileRepository.updateProfile(state.profile);
+  /// Guarda los campos editados del perfil actual sobre los que vienen de Supabase.
+  Future<void> updateProfile() async {
+    final current = state.profile;
+    final base = ProfileDto.fromProfile(initialProfile);
+
+    final merged = ProfileDto(
+      id: current.id ?? base.id,
+      userId: current.userId ?? base.userId,
+      name: current.name ?? base.name,
+      height: current.height ?? base.height,
+      weight: current.weight ?? base.weight,
+      gender: current.gender ?? base.gender,
+      age: current.age ?? base.age,
+      activityLevel: current.activityLevel ?? base.activityLevel,
+      goal: current.goal ?? base.goal,
+    );
+
+    await profileRepository.updateProfile(merged);
   }
 }

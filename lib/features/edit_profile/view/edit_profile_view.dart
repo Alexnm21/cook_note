@@ -8,6 +8,7 @@ import '../../../config/theme/styles/base_spaces.dart';
 import '../../../core/enums/activity_level.dart';
 import '../../../core/enums/gender.dart';
 import '../../../core/enums/goal.dart';
+import '../../../core/utils/validation_service.dart';
 import '../../../widgets/dialogs/input_dialog.dart';
 import '../../../widgets/dialogs/single_selection_profile_dialog.dart';
 import '../bloc/edit_profile_bloc.dart';
@@ -31,7 +32,7 @@ class EditProfileView extends StatelessWidget {
           return ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: 6,
+              itemCount: 7,
               separatorBuilder: (context, index) => const _Divider(),
               itemBuilder: (context, index) {
                 switch (index) {
@@ -52,16 +53,44 @@ class EditProfileView extends StatelessWidget {
                       title: 'profile.weight'.tr(),
                       value: '${state.profile.weight} kg',
                       onTap: () {
-                        showInputDialog(context, 'profile.weight'.tr(),
-                            (value) {
-                          context.read<EditProfileBloc>().onChangeProfile(
-                                state.profile
-                                    .copyWith(weight: int.parse(value)),
-                              );
-                        });
+                        showInputDialog(
+                          context,
+                          'profile.weight'.tr(),
+                          (value) {
+                            context.read<EditProfileBloc>().onChangeProfile(
+                                  state.profile
+                                      .copyWith(weight: int.tryParse(value) ?? 0),
+                                );
+                          },
+                          keyboardType: TextInputType.number,
+                          validator: (value) => ValidationService
+                              .validatePositiveInt(value, max: 500)
+                              ?.tr(),
+                        );
                       },
                     );
                   case 2:
+                    return EditProfileTilePart(
+                      title: 'profile.height'.tr(),
+                      value: '${state.profile.height} cm',
+                      onTap: () {
+                        showInputDialog(
+                          context,
+                          'profile.height'.tr(),
+                          (value) {
+                            context.read<EditProfileBloc>().onChangeProfile(
+                                  state.profile
+                                      .copyWith(height: int.tryParse(value) ?? 0),
+                                );
+                          },
+                          keyboardType: TextInputType.number,
+                          validator: (value) => ValidationService
+                              .validatePositiveInt(value, max: 250)
+                              ?.tr(),
+                        );
+                      },
+                    );
+                  case 3:
                     return EditProfileTilePart(
                       title: 'profile.gender.title'.tr(),
                       value:
@@ -81,19 +110,28 @@ class EditProfileView extends StatelessWidget {
                         );
                       },
                     );
-                  case 3:
+                  case 4:
                     return EditProfileTilePart(
                       title: 'profile.age'.tr(),
                       value: '${state.profile.age}',
                       onTap: () {
-                        showInputDialog(context, 'profile.age'.tr(), (value) {
-                          context.read<EditProfileBloc>().onChangeProfile(
-                                state.profile.copyWith(age: int.parse(value)),
-                              );
-                        });
+                        showInputDialog(
+                          context,
+                          'profile.age'.tr(),
+                          (value) {
+                            context.read<EditProfileBloc>().onChangeProfile(
+                                  state.profile
+                                      .copyWith(age: int.tryParse(value) ?? 0),
+                                );
+                          },
+                          keyboardType: TextInputType.number,
+                          validator: (value) => ValidationService
+                              .validatePositiveInt(value, max: 120)
+                              ?.tr(),
+                        );
                       },
                     );
-                  case 4:
+                  case 5:
                     return EditProfileTilePart(
                       title: 'profile.activity_level.title'.tr(),
                       value:
@@ -116,7 +154,7 @@ class EditProfileView extends StatelessWidget {
                         );
                       },
                     );
-                  case 5:
+                  case 6:
                     return EditProfileTilePart(
                       title: 'profile.goal.title'.tr(),
                       value: 'profile.goal.${state.profile.goal?.name}'.tr(),
@@ -144,10 +182,21 @@ class EditProfileView extends StatelessWidget {
     );
   }
 
-  showInputDialog(BuildContext context, String title, Function(String) onSave) {
+  showInputDialog(
+    BuildContext context,
+    String title,
+    Function(String) onSave, {
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+  }) {
     return showDialog(
       context: context,
-      builder: (_) => InputDialog(title: title, onSave: onSave),
+      builder: (_) => InputDialog(
+        title: title,
+        onSave: onSave,
+        keyboardType: keyboardType,
+        validator: validator,
+      ),
     );
   }
 }

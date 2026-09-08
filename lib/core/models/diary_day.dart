@@ -72,7 +72,7 @@ class DiaryDay {
   DiaryDay removeMeal(Occasion occasion, String recipeId) {
     final updatedMeals = meals
         .where(
-          (m) => m.occasion != occasion && m.recipe.id != recipeId,
+          (m) => m.occasion != occasion || m.recipe.id != recipeId,
         )
         .toList();
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cook_note/core/models/recipe.dart';
 import 'package:cook_note/data/abstract/login_repository.dart';
 import 'package:cook_note/data/abstract/recipe_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Implementaciones mock para testing
 ///
@@ -17,6 +18,22 @@ class MockLoginRepository implements LoginRepository {
     required String name,
   }) async {
     // Simular registro exitoso
+    await Future.delayed(const Duration(milliseconds: 100));
+  }
+
+  @override
+  Future<User?> loginWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    // Simular login exitoso
+    await Future.delayed(const Duration(milliseconds: 100));
+    return null;
+  }
+
+  @override
+  Future<void> resetPasswordForEmail(String email) async {
+    // Simular envío de recuperación exitoso
     await Future.delayed(const Duration(milliseconds: 100));
   }
 }

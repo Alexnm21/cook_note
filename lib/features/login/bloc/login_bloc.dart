@@ -33,11 +33,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<User?> loginWithEmailAndPassword(String email, String password) async {
     try {
-      final response = await Supabase.instance.client.auth.signInWithPassword(
-        email: email,
-        password: password,
+      return await loginRepository.loginWithEmailAndPassword(
+        email,
+        password,
       );
-      return response.user;
     } catch (e) {
       _catchError(e);
       return null;

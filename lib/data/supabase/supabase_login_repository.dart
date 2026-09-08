@@ -19,6 +19,23 @@ class SupabaseLoginRepository extends BaseSupabaseRepository
   }
 
   @override
+  Future<User?> loginWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    final AuthResponse response = await supabase.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+    return response.user;
+  }
+
+  @override
+  Future<void> resetPasswordForEmail(String email) async {
+    await supabase.auth.resetPasswordForEmail(email);
+  }
+
+  @override
   Future<void> registerProfile({
     required String email,
     required String password,
