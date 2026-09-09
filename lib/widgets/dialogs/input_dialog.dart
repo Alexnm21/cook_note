@@ -10,12 +10,14 @@ import '../custom_button.dart';
 class InputDialog extends StatefulWidget {
   final String title;
   final Function(String) onSave;
+  final String currentValue;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   const InputDialog({
     super.key,
     required this.title,
     required this.onSave,
+    this.currentValue = "",
     this.keyboardType,
     this.validator,
   });
@@ -28,6 +30,12 @@ class _InputDialogState extends State<InputDialog> {
   final TextEditingController controller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? errorText;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.text = widget.currentValue;
+  }
 
   @override
   Widget build(BuildContext context) {

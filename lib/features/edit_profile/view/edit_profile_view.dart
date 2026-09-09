@@ -41,7 +41,10 @@ class EditProfileView extends StatelessWidget {
                       title: 'profile.name'.tr(),
                       value: state.profile.name ?? '',
                       onTap: () {
-                        showInputDialog(context, 'profile.name'.tr(), (value) {
+                        showInputDialog(context,
+                            title: 'profile.name'.tr(),
+                            currentValue: state.profile.name ?? '',
+                            onSave: (value) {
                           context.read<EditProfileBloc>().onChangeProfile(
                                 state.profile.copyWith(name: value),
                               );
@@ -55,17 +58,19 @@ class EditProfileView extends StatelessWidget {
                       onTap: () {
                         showInputDialog(
                           context,
-                          'profile.weight'.tr(),
-                          (value) {
+                          title: 'profile.weight'.tr(),
+                          currentValue: '${state.profile.weight}',
+                          onSave: (value) {
                             context.read<EditProfileBloc>().onChangeProfile(
-                                  state.profile
-                                      .copyWith(weight: int.tryParse(value) ?? 0),
+                                  state.profile.copyWith(
+                                      weight: int.tryParse(value) ?? 0),
                                 );
                           },
                           keyboardType: TextInputType.number,
-                          validator: (value) => ValidationService
-                              .validatePositiveInt(value, max: 500)
-                              ?.tr(),
+                          validator: (value) =>
+                              ValidationService.validatePositiveInt(value,
+                                      max: 500)
+                                  ?.tr(),
                         );
                       },
                     );
@@ -76,17 +81,19 @@ class EditProfileView extends StatelessWidget {
                       onTap: () {
                         showInputDialog(
                           context,
-                          'profile.height'.tr(),
-                          (value) {
+                          title: 'profile.height'.tr(),
+                          currentValue: '${state.profile.height}',
+                          onSave: (value) {
                             context.read<EditProfileBloc>().onChangeProfile(
-                                  state.profile
-                                      .copyWith(height: int.tryParse(value) ?? 0),
+                                  state.profile.copyWith(
+                                      height: int.tryParse(value) ?? 0),
                                 );
                           },
                           keyboardType: TextInputType.number,
-                          validator: (value) => ValidationService
-                              .validatePositiveInt(value, max: 250)
-                              ?.tr(),
+                          validator: (value) =>
+                              ValidationService.validatePositiveInt(value,
+                                      max: 250)
+                                  ?.tr(),
                         );
                       },
                     );
@@ -117,17 +124,19 @@ class EditProfileView extends StatelessWidget {
                       onTap: () {
                         showInputDialog(
                           context,
-                          'profile.age'.tr(),
-                          (value) {
+                          title: 'profile.age'.tr(),
+                          currentValue: '${state.profile.age}',
+                          onSave: (value) {
                             context.read<EditProfileBloc>().onChangeProfile(
                                   state.profile
                                       .copyWith(age: int.tryParse(value) ?? 0),
                                 );
                           },
                           keyboardType: TextInputType.number,
-                          validator: (value) => ValidationService
-                              .validatePositiveInt(value, max: 120)
-                              ?.tr(),
+                          validator: (value) =>
+                              ValidationService.validatePositiveInt(value,
+                                      max: 120)
+                                  ?.tr(),
                         );
                       },
                     );
@@ -183,9 +192,10 @@ class EditProfileView extends StatelessWidget {
   }
 
   showInputDialog(
-    BuildContext context,
-    String title,
-    Function(String) onSave, {
+    BuildContext context, {
+    required String title,
+    required String currentValue,
+    required Function(String) onSave,
     TextInputType? keyboardType,
     String? Function(String?)? validator,
   }) {
@@ -193,6 +203,7 @@ class EditProfileView extends StatelessWidget {
       context: context,
       builder: (_) => InputDialog(
         title: title,
+        currentValue: currentValue,
         onSave: onSave,
         keyboardType: keyboardType,
         validator: validator,

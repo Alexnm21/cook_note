@@ -136,9 +136,9 @@ class _MacrosFormPartState extends State<MacrosFormPart> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 2,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          childAspectRatio: 2.8,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 5,
+          childAspectRatio: 1.5,
           children: Macros.values
               .map(
                 (macro) => _MacroInputField(
@@ -219,44 +219,38 @@ class _MacroInputFieldState extends State<_MacroInputField> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: widget.macro.color,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Icon(
-              widget.macro.icon,
-              color: Colors.white,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.macro.text,
-                  style: baseTextStyle.h3.copyWith(
+          Column(
+            children: [
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: widget.macro.color,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  widget.macro.icon,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              spacings.y.s5,
+              SizedBox(
+                width: 40,
+                child: Text(
+                  '${widget.macro.text} ${_getUnit(widget.macro)}',
+                  style: baseTextStyle.h6.copyWith(
                     color: widget.macro.color,
                     fontWeight: FontWeight.w600,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
-                Text(
-                  _getUnit(widget.macro),
-                  style: baseTextStyle.body.copyWith(
-                    color: widget.macro.color.withValues(alpha: 0.7),
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+          const SizedBox(width: 16),
           Expanded(
-            flex: 1,
             child: TextFormField(
               controller: _controller,
               keyboardType: TextInputType.number,

@@ -16,7 +16,7 @@ class _ObjectivePartState extends State<ObjectivePart> {
           return const SizedBox.shrink();
         }
 
-        DiaryDay diaryDay = state.diaryDay;
+        DiaryEntry diaryEntry = state.diaryEntry;
 
         return SingleChildScrollView(
           child: Column(
@@ -26,7 +26,7 @@ class _ObjectivePartState extends State<ObjectivePart> {
                 alignment: Alignment.center,
                 children: [
                   AnimatedProgressionArc(
-                    progress: diaryDay.getCalories().round() /
+                    progress: diaryEntry.getCalories().round() /
                         state.macroObjective(Macros.calories),
                     size: 200,
                     duration: const Duration(milliseconds: 800),
@@ -34,7 +34,7 @@ class _ObjectivePartState extends State<ObjectivePart> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(diaryDay.getCalories().round().toString(),
+                      Text(diaryEntry.getCalories().round().toString(),
                           style: const TextStyle(
                               fontSize: 48, fontWeight: FontWeight.bold)),
                       Text('de ${state.macroObjective(Macros.calories)} ',
@@ -48,7 +48,7 @@ class _ObjectivePartState extends State<ObjectivePart> {
                   .where((macro) => macro != Macros.calories)
                   .map((macro) => _MacrosBar(
                         label: macro.text,
-                        value: diaryDay.getMacro(macro).round(),
+                        value: diaryEntry.getMacro(macro).round(),
                         objective: state.macroObjective(macro),
                         color: macro.color,
                       )),

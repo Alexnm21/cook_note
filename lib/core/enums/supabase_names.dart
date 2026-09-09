@@ -1,7 +1,8 @@
 enum SupabaseNames {
   recipeImages('recipe-images'),
   recipes('recipes'),
-  profiles('profiles');
+  profiles('profiles'),
+  diaryEntries('diary_entries');
 
   const SupabaseNames(this.name);
 
