@@ -18,13 +18,13 @@ ser coherente con la tabla `diary_entries`.
 
 ## Acceptance criteria
 
-- [ ] El diario se lee/guarda desde la tabla `diary_entries` de Supabase.
-- [ ] Un día sin comidas no se persiste en la BD: la fila se crea solo al añadir la primera comida y se elimina si quedan 0 comidas.
-- [ ] Los "recent recipes" siguen guardándose en Hive (sin cambios).
-- [ ] El modelo `DiaryDay` pasa a llamarse `DiaryEntry` en todo el código.
-- [ ] `ProfileBloc` usa `SupabaseDiaryRepository` y pasa `userId` a las llamadas del diario.
-- [ ] Se elimina `hive_diary_repository.dart`.
-- [ ] Pasan `flutter analyze` y `flutter test`.
+- [x] El diario se lee/guarda desde la tabla `diary_entries` de Supabase.
+- [x] Un día sin comidas no se persiste en la BD: la fila se crea solo al añadir la primera comida y se elimina si quedan 0 comidas.
+- [x] Los "recent recipes" siguen guardándose en Hive (sin cambios).
+- [x] El modelo `DiaryDay` pasa a llamarse `DiaryEntry` en todo el código.
+- [x] `ProfileBloc` usa `SupabaseDiaryRepository` y pasa `userId` a las llamadas del diario.
+- [x] Se elimina `hive_diary_repository.dart`.
+- [x] Pasan `flutter analyze` y `flutter test`.
 
 ## SQL (aplicar manualmente en Supabase)
 

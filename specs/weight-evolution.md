@@ -22,18 +22,29 @@ historial de registros.
 
 ## Acceptance criteria
 
-- [ ] El usuario puede añadir un pesaje nuevo (fecha + kg) desde la pantalla.
-- [ ] La pantalla muestra "PESO ACTUAL" con la fecha de hoy: peso actual en
-      grande, cambio reciente al lado y línea de progreso hacia el objetivo
-      (azcla la vista de macronutrientes del diario).
-- [ ] La "Curva mensual" muestra el gráfico de evolución y el usuario puede
-      elegir el rango (1 mes, 3 meses, 1 año...).
-- [ ] Una fila de tres chips muestra peso mínimo histórico, máximo histórico
+- [x] El usuario puede añadir un pesaje nuevo (fecha + kg) desde la pantalla.
+- [x] La pantalla muestra "PESO ACTUAL": peso actual en grande, cambio reciente
+      al lado y línea de progreso hacia el objetivo (azcla la vista de
+      macronutrientes del diario).
+- [x] La "Curva mensual" muestra el gráfico de evolución y el usuario puede
+      elegir el rango (1 mes, 3 meses, 6 meses, 1 año, todos).
+- [x] Una fila de tres chips muestra peso mínimo histórico, máximo histórico
       y ritmo de bajada con valoración de saludabilidad.
-- [ ] La lista "Historial de pesajes" muestra cada registro en un list tile.
-- [ ] El botón "Añadir pesaje" está al final de la pantalla.
-- [ ] Existe estado vacío cuando el usuario no tiene pesajes.
-- [ ] Pasan `flutter analyze` y `flutter test`.
+- [x] La lista "Historial de pesajes" muestra cada registro en un list tile.
+- [x] Existe estado vacío cuando el usuario no tiene pesajes.
+- [x] Pasan `flutter analyze` y `flutter test`.
+
+## Desviaciones respecto al diseño original
+
+- El acceso para añadir un pesaje se implementó como `FloatingActionButton`
+  (`lib/features/weight/view/weight_view.dart`) en lugar de un botón al final
+  de la lista. En el estado vacío sí aparece el botón "Añadir pesaje" con
+  `CustomButton.text`.
+- El chip de peso actual muestra la fecha del **último pesaje registrado**
+  (`state.currentRecord.date`), no la fecha de hoy. Se cambió porque con la
+  fecha de hoy el peso mostrado podía no corresponder a esa fecha.
+- El rango por defecto del gráfico es 1 mes, y el selector incluye "Todos"
+  además de 1 mes / 3 meses / 6 meses / 1 año.
 
 ## UI (desde el diseño, de arriba a abajo)
 
@@ -54,7 +65,8 @@ historial de registros.
 
 4. **Lista "Historial de pesajes"**: lista vertical de tiles con cada registro.
 
-5. **Botón "Añadir pesaje"** al final de la pantalla.
+5. **Botón "Añadir pesaje"**: implementado como `FloatingActionButton`
+   (ver "Desviaciones" más abajo).
 
 ## SQL (aplicar manualmente en Supabase)
 
@@ -91,7 +103,7 @@ alter table public.profiles
   add column target_weight numeric(5,2);
 ```
 
-## Archivos tocados (plan)
+## Archivos tocados
 
 - `lib/core/enums/supabase_names.dart`: agregar `weightRecords('weight_records')`.
 - `lib/core/models/weight_record.dart`: nuevo modelo (`id`, `weightKg`, `date`, `toMap`/`fromMap`).
@@ -101,17 +113,31 @@ alter table public.profiles
 - `lib/config/router/router.dart`: nueva ruta hacia la pantalla de evolución.
 - `lib/features/profile/`: entrada/punto de acceso a la pantalla.
 - `assets/translations/es.json`: claves de texto visibles.
-- `test/mocks/mock_repositories.dart`: mock de `WeightRepository`.
-- `test/...`: tests del `WeightBloc`.
+- `lib/pages/weight_evolution_page.dart`: page host con `BlocProvider`.
+- `lib/features/weight/`: `view/` (`weight_view.dart`, `add_weight_dialog.dart`)
+  y `parts/` divididas por secciones de la pantalla.
+- `test/features/weight/weight_state_test.dart`: tests de `WeightState` y
+  `WeightRecord`.
 
 ## Notas
 
-- El "cambio reciente" (delta) se calcula entre el pesaje actual y el anterior
-  al mismo (o el del periodo seleccionado, por definir).
-- La "valoración de saludabilidad" del ritmo de bajada se calcula comparando
-  la pérdida semanal/media (rango saludable habitual: 0,5–1 kg por semana),
-  por confirmar el criterio exacto.
-- El punto de acceso desde el perfil aún está por decidir en detalle (tarjeta
-  vs. list tile) según el diseño disponible.
-- Gráfico: no agregar dependencias nuevas sin confirmación; si no se permiten
-  (p.ej. `fl_chart`), el gráfico debe construirse con widgets propios.
+- El "cambio reciente" (delta) se calcula entre el pesaje actual y el
+  inmediatamente anterior, considerando solo registros con fecha no futura
+  (`WeightState.recentChange`).
+- La "valoración de saludabilidad" del ritmo de bajada se calcula sobre el
+  peso perdido por semana en el rango seleccionado
+  (`WeightState.weeklyLossRate`). Se considera saludable una pérdida de
+  hasta 1 kg/semana; por encima se muestra "Muy rápido"
+  (`WeightState.isHealthyLoss`).
+- El punto de acceso desde el perfil es una fila "Evolución del peso" dentro
+  de la tarjeta "Información Física"
+  (`lib/features/profile/view/profile_view.dart`).
+- El progreso hacia el objetivo se calcula sobre el primer y el último
+  pesaje del rango seleccionado (`WeightState.goalProgress`), con el objetivo
+  tomado de `profiles.target_weight`.
+- Gráfico construido con un `CustomPainter` propio
+  (`lib/features/weight/parts/weight_chart_part.dart`), sin dependencias
+  externas.
+- Tests: `test/features/weight/weight_state_test.dart` cubre la lógica de
+  `WeightState` y el modelo `WeightRecord`. No hay tests del `WeightBloc`;
+  no se creó mock de `WeightRepository`.
