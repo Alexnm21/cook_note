@@ -7,14 +7,38 @@ import '../../config/theme/styles/base_spaces.dart';
 import '../../config/theme/styles/base_text_style.dart';
 import '../custom_button.dart';
 
-class InputDialog extends StatelessWidget {
+class InputDialog extends StatefulWidget {
   final String title;
   final Function(String) onSave;
-  const InputDialog({super.key, required this.title, required this.onSave});
+  final String currentValue;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  const InputDialog({
+    super.key,
+    required this.title,
+    required this.onSave,
+    this.currentValue = "",
+    this.keyboardType,
+    this.validator,
+  });
+
+  @override
+  State<InputDialog> createState() => _InputDialogState();
+}
+
+class _InputDialogState extends State<InputDialog> {
+  final TextEditingController controller = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? errorText;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.text = widget.currentValue;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
     return Dialog(
       child: Container(
         padding: paddings.all.s16,
@@ -22,29 +46,37 @@ class InputDialog extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(BaseRadius.s),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: baseTextStyle.h2),
-            spacings.y.s10,
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(BaseRadius.s),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.title, style: baseTextStyle.h2),
+              spacings.y.s10,
+              TextFormField(
+                controller: controller,
+                keyboardType: widget.keyboardType,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(BaseRadius.s),
+                  ),
+                  errorText: errorText,
                 ),
+                validator: widget.validator,
+                onChanged: (_) => setState(() => errorText = null),
               ),
-            ),
-            spacings.y.s10,
-            CustomButton(
-              child: Text('profile.save'.tr()),
-              onPressed: () {
-                onSave(controller.text);
-                router.pop();
-              },
-            ),
-          ],
+              spacings.y.s10,
+              CustomButton(
+                child: Text('profile.save'.tr()),
+                onPressed: () {
+                  if (!_formKey.currentState!.validate()) return;
+                  widget.onSave(controller.text);
+                  router.pop();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

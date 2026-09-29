@@ -10,7 +10,7 @@ import '../../../core/enums/macros.dart';
 import '../../../core/enums/occasion.dart';
 import '../../../core/extensions/datetime_extension.dart';
 import '../../../core/models/daily_meal_entry.dart';
-import '../../../core/models/diary_day.dart';
+import '../../../core/models/diary_entry.dart';
 import '../../../core/models/recipe.dart';
 import '../../../widgets/animated_progression_arc.dart';
 import '../../../widgets/animated_progression_bar.dart';

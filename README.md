@@ -5,11 +5,23 @@ The project follows a feature-based modular structure to keep it scalable, maint
 
 ## Screenshots
 
-> Add your screenshots here when available:
->
-> - `assets/screenshots/home.png`
-> - `assets/screenshots/recipe.png`
-> - `assets/screenshots/diary.png`
+### Recipes
+
+| Recipe details | Recipes list |
+| :---: | :---: |
+| <img src="assets/screenshots/recipe.png" width="280" alt="Recipe details"> | <img src="assets/screenshots/recipes.png" width="280" alt="Recipes list"> |
+
+### Food diary
+
+| Diary | Macros | Weight |
+| :---: | :---: | :---: |
+| <img src="assets/screenshots/food_diary.png" width="240" alt="Food diary"> | <img src="assets/screenshots/diary_macros.png" width="240" alt="Diary macros"> | <img src="assets/screenshots/weight.png" width="240" alt="Weight tracking"> |
+
+### Profile
+
+| Profile |
+| :---: |
+| <img src="assets/screenshots/profile.png" width="280" alt="User profile"> |
 
 ## Project Architecture
 
@@ -41,6 +53,13 @@ The app is organized with clear separation of responsibilities:
   - recipe details view (ingredients, steps, macros, difficulty, occasion)
 - **Recent Recipes**: local storage and retrieval of recently viewed recipes.
 - **Nutrition Diary**: daily meal and objective tracking.
+- **Weight Tracking** (`lib/features/weight/`):
+  - manual weight entries (kg and date, one record per day)
+  - evolution chart with range selector (1 month / 3 months / 6 months / 1 year / all), rendered with a custom painter (no chart dependencies)
+  - current weight, min/max and weekly loss rate with a "healthy / too fast" rating
+  - progress towards the target weight stored in the profile
+  - full weigh-in history with the delta against the previous record
+  - data persisted in Supabase (`weight_records`, RLS scoped per user)
 - **User Profile**: profile visualization and editing.
 
 ## Folder Structure
@@ -70,7 +89,8 @@ lib/
 │   ├── create_edit_recipe/
 │   ├── diary/
 │   ├── profile/
-│   └── edit_profile/
+│   ├── edit_profile/
+│   └── weight/
 ├── pages/                     # Main screen pages
 ├── widgets/                   # Reusable UI widgets
 ├── main.dart                  # Entry point

@@ -4,11 +4,11 @@ import 'daily_meal_entry.dart';
 import 'recipe.dart';
 
 /// Represents all meals for a specific day
-class DiaryDay {
+class DiaryEntry {
   final DateTime date;
   final List<DailyMealEntry> meals;
 
-  DiaryDay({
+  DiaryEntry({
     required this.date,
     this.meals = const [],
   });
@@ -61,25 +61,25 @@ class DiaryDay {
     return value;
   }
 
-  /// Adds a meal to the diary day
-  DiaryDay addMeal(DailyMealEntry meal) {
+  /// Adds a meal to the diary entry
+  DiaryEntry addMeal(DailyMealEntry meal) {
     final updatedMeals = [...meals, meal];
 
-    return DiaryDay(date: date, meals: updatedMeals);
+    return DiaryEntry(date: date, meals: updatedMeals);
   }
 
   /// Removes a meal by recipe and occasion
-  DiaryDay removeMeal(Occasion occasion, String recipeId) {
+  DiaryEntry removeMeal(Occasion occasion, String recipeId) {
     final updatedMeals = meals
         .where(
-          (m) => m.occasion != occasion && m.recipe.id != recipeId,
+          (m) => m.occasion != occasion || m.recipe.id != recipeId,
         )
         .toList();
 
-    return DiaryDay(date: date, meals: updatedMeals);
+    return DiaryEntry(date: date, meals: updatedMeals);
   }
 
-  /// Serializes the DiaryDay object to a map
+  /// Serializes the DiaryEntry object to a map
   Map<String, dynamic> toMap() {
     return {
       'date': date.toIso8601String(),
@@ -87,9 +87,9 @@ class DiaryDay {
     };
   }
 
-  /// Creates a DiaryDay object from a map
-  factory DiaryDay.fromMap(Map<String, dynamic> map) {
-    return DiaryDay(
+  /// Creates a DiaryEntry object from a map
+  factory DiaryEntry.fromMap(Map<String, dynamic> map) {
+    return DiaryEntry(
       date: DateTime.parse(map['date'] as String),
       meals: (map['meals'] as List<dynamic>?)
               ?.map((m) => DailyMealEntry.fromMap(Map<String, dynamic>.from(m)))

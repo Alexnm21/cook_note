@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/env/env.dart';
 import 'config/router/router.dart';
 import 'config/theme/app_theme.dart';
+import 'core/blocs/user_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +15,9 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await Hive.initFlutter();
   Gemini.init(apiKey: Env.geminiApiKey);
+
+  final userBloc = UserBloc();
+  router = buildRouter(userBloc);
 
   runApp(
     EasyLocalization(
@@ -38,7 +42,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: AppTheme.light,
-      title: 'Material App',
+      title: 'Cook Note',
     );
   }
 }

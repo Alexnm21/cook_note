@@ -12,4 +12,6 @@ extension DateTimeExtension on DateTime {
   }
 
   String get monthName => DateFormat('MMMM').format(this);
+
+  String get monthShortName => DateFormat('MMM').format(this);
 }

@@ -9,11 +9,13 @@ class CustomSelectionWidget extends StatelessWidget {
   final List<String> options;
   final String selectedOption;
   final Function(String) onSelected;
+  final double borderRadius;
   const CustomSelectionWidget({
     super.key,
     required this.options,
     required this.selectedOption,
     required this.onSelected,
+    this.borderRadius = BaseRadius.xs,
   });
 
   @override
@@ -24,7 +26,7 @@ class CustomSelectionWidget extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.secondary,
-        borderRadius: BorderRadius.circular(BaseRadius.xs),
+        borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,7 +34,8 @@ class CustomSelectionWidget extends StatelessWidget {
             .map((option) => _ContainerOption(
                 option: option,
                 isSelected: option == selectedOption,
-                onTap: () => onSelected(option)))
+                onTap: () => onSelected(option),
+                borderRadius: borderRadius))
             .toList(),
       ),
     );
@@ -43,10 +46,12 @@ class _ContainerOption extends StatelessWidget {
   final String option;
   final bool isSelected;
   final Function() onTap;
+  final double borderRadius;
   const _ContainerOption({
     required this.option,
     required this.isSelected,
     required this.onTap,
+    required this.borderRadius,
   });
 
   @override
@@ -59,7 +64,9 @@ class _ContainerOption extends StatelessWidget {
           alignment: Alignment.center,
           padding: paddings.all.s10,
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primary : Colors.transparent,
+            color: isSelected
+                ? AppColors.primary
+                : AppColors.primary.withValues(alpha: 0.0),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
@@ -69,9 +76,11 @@ class _ContainerOption extends StatelessWidget {
                     ),
                   ]
                 : null,
-            borderRadius: BorderRadius.circular(BaseRadius.xs),
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
-          child: Text(option, style: baseTextStyle.h3),
+          child: Text(option,
+              style: baseTextStyle.h3
+                  .copyWith(color: isSelected ? Colors.white : AppColors.text)),
         ),
       ),
     );

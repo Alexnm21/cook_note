@@ -3,11 +3,11 @@ part of 'profile_bloc.dart';
 class ProfileState {
   final bool loading;
   final Profile profile;
-  final DiaryDay diaryDay;
+  final DiaryEntry diaryEntry;
   final DateTime selectedDate;
 
   ProfileState({
-    required this.diaryDay,
+    required this.diaryEntry,
     required this.selectedDate,
     required this.profile,
     this.loading = false,
@@ -24,12 +24,12 @@ class ProfileState {
 
   ProfileState copyWith({
     Profile? profile,
-    DiaryDay? diaryDay,
+    DiaryEntry? diaryEntry,
     DateTime? selectedDate,
   }) {
     return ProfileState(
       profile: profile ?? this.profile,
-      diaryDay: diaryDay ?? this.diaryDay,
+      diaryEntry: diaryEntry ?? this.diaryEntry,
       selectedDate: selectedDate ?? this.selectedDate,
     );
   }

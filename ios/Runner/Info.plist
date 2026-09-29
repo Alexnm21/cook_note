@@ -19,8 +19,8 @@
 			<string>es</string>
 			<string>en</string>
 		</array>
-		<key>CFBundleName</key>
-		<string>cook_note</string>
+	<key>CFBundleName</key>
+	<string>Cook Note</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>

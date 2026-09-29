@@ -68,6 +68,29 @@ class ProfileView extends StatelessWidget {
                   label: 'profile.activity_level.title'.tr(),
                   value: profile.activityLevel.text,
                 ),
+                InkWell(
+                  onTap: () {
+                    router.pushNamed(
+                      Routes.weightEvolution.name,
+                      extra: profile,
+                    );
+                  },
+                  child: Padding(
+                    padding: paddings.bottom.s12,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('weight.title'.tr(),
+                            style: baseTextStyle.h3
+                                .copyWith(color: Colors.grey[600])),
+                        const Icon(
+                          Icons.chevron_right,
+                          color: AppColors.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
             spacings.y.s24,
@@ -77,6 +100,12 @@ class ProfileView extends StatelessWidget {
                 InfoRowPart(
                   label: 'profile.goal.title'.tr(),
                   value: profile.goal.text,
+                ),
+                InfoRowPart(
+                  label: 'profile.target_weight'.tr(),
+                  value: profile.targetWeight != null
+                      ? '${profile.targetWeight} kg'
+                      : '${profile.weight} kg',
                 ),
               ],
             ),

@@ -36,6 +36,13 @@
         "register": "Registrarse",
         "createAccount": "Crear cuenta",
         "forgotPassword": "¿Olvidaste tu contraseña?",
+        "forgot_password": {
+            "title": "Recuperar contraseña",
+            "description": "Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+            "send": "Enviar enlace de recuperación",
+            "sentTitle": "Correo enviado",
+            "sentBody": "Si el correo está registrado, recibirás un enlace para restablecer tu contraseña."
+        },
         "email_confirmation": "Se ha enviado un correo electrónico de confirmación a tu cuenta. Por favor, verifica tu correo electrónico para continuar.",
         "errors": {
             "email_already_registered": "Este email ya está registrado. Intenta iniciar sesión.",
@@ -53,7 +60,8 @@
         "email_invalid": "Ingresa un correo electrónico válido",
         "password_required": "La contraseña es requerida",
         "password_min_length": "La contraseña debe tener al menos 6 caracteres",
-        "password_must_contain_number": "La contraseña debe contener al menos un número"
+        "password_must_contain_number": "La contraseña debe contener al menos un número",
+        "invalid_number": "Ingresa un número válido"
     },
     "home": {
         "myRecipes": {
@@ -146,6 +154,7 @@
         },
         "height": "Altura",
         "weight": "Peso",
+        "target_weight": "Peso objetivo",
         "activity_level": {
             "title": "Nivel de Actividad",
             "sedentary": "Sedentario",
@@ -164,6 +173,31 @@
             "gainWeight": "Ganar peso"
         },
         "load_error": "Error al cargar el perfil"
+    },
+    "weight": {
+        "title": "Evolución del peso",
+        "current": "Peso actual",
+        "curve": "Curva de evolución",
+        "rangeAll": "Todos",
+        "emptyChart": "Sin datos en el rango seleccionado",
+        "needTwo": "Necesitas al menos dos pesajes para ver la curva",
+        "min": "Mínimo",
+        "max": "Máximo",
+        "rate": "Ritmo",
+        "rateWeek": "kg/sem",
+        "remaining": "Faltan {} kg",
+        "healthy": "Saludable",
+        "fastRate": "Muy rápido",
+        "noLoss": "Sin bajada",
+        "progress": "Progreso al objetivo",
+        "history": "Historial de pesajes",
+        "add": "Añadir pesaje",
+        "addTitle": "Nuevo pesaje",
+        "weightField": "Peso (kg)",
+        "dateField": "Fecha",
+        "kg": "kg",
+        "emptyTitle": "Sin pesajes todavía",
+        "emptyBody": "Añade tu primer pesaje para comenzar a ver tu evolución"
     },
     "ingredients": {
         "quantity": "Cantidad",

@@ -9,6 +9,7 @@ class Profile {
   final String name;
   final int height;
   final int weight;
+  final int? targetWeight;
   final Gender gender;
   final int age;
   final ActivityLevel activityLevel;
@@ -20,6 +21,7 @@ class Profile {
       required this.name,
       required this.height,
       required this.weight,
+      this.targetWeight,
       required this.gender,
       required this.age,
       required this.activityLevel,
@@ -32,6 +34,7 @@ class Profile {
       name: map['name'],
       height: map['height'],
       weight: map['weight'],
+      targetWeight: (map['target_weight'] as num?)?.toInt(),
       gender: GenderExtension.fromString(map['gender']),
       age: map['age'],
       activityLevel: ActivityLevelExtension.fromString(map['activity_level']),
@@ -46,6 +49,7 @@ class ProfileDto {
   final String? name;
   final int? height;
   final int? weight;
+  final int? targetWeight;
   final Gender? gender;
   final int? age;
   final ActivityLevel? activityLevel;
@@ -60,7 +64,8 @@ class ProfileDto {
       required this.gender,
       required this.age,
       required this.activityLevel,
-      required this.goal});
+      required this.goal,
+      this.targetWeight});
 
   factory ProfileDto.fromProfile(Profile profile) {
     return ProfileDto(
@@ -69,6 +74,7 @@ class ProfileDto {
       name: profile.name,
       height: profile.height,
       weight: profile.weight,
+      targetWeight: profile.targetWeight,
       gender: profile.gender,
       age: profile.age,
       activityLevel: profile.activityLevel,
@@ -83,6 +89,7 @@ class ProfileDto {
       'name': name,
       'height': height,
       'weight': weight,
+      'target_weight': targetWeight,
       'gender': gender?.name,
       'age': age,
       'activity_level': activityLevel?.name,
@@ -99,6 +106,7 @@ class ProfileDto {
     String? userId,
     String? name,
     int? weight,
+    int? targetWeight,
     Gender? gender,
     int? age,
     ActivityLevel? activityLevel,
@@ -111,6 +119,7 @@ class ProfileDto {
       name: name ?? this.name,
       height: height ?? this.height,
       weight: weight ?? this.weight,
+      targetWeight: targetWeight ?? this.targetWeight,
       gender: gender ?? this.gender,
       age: age ?? this.age,
       activityLevel: activityLevel ?? this.activityLevel,

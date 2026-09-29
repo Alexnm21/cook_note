@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/enums/enums.dart';
 import '../../../core/models/daily_meal_entry.dart';
-import '../../../core/models/diary_day.dart';
+import '../../../core/models/diary_entry.dart';
 import '../../../core/models/profile.dart';
 import '../../../core/utils/diary_utils.dart';
 import '../../../data/abstract/diary_repository.dart';
 import '../../../data/abstract/profile_repository.dart';
-import '../../../data/hive/hive_diary_repository.dart';
+import '../../../data/supabase/supabase_diary_repository.dart';
 import '../../../data/supabase/supabase_profile_repository.dart';
 
 part 'profile_event.dart';
@@ -27,11 +27,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     required this.userId,
   })  : profileRepository =
             profileRepository ?? SupabaseProfileRepository.instance(),
-        diaryRepository = diaryRepository ?? HiveDiaryRepository(),
+        diaryRepository = diaryRepository ?? SupabaseDiaryRepository.instance(),
         super(
           ProfileState(
             selectedDate: DateTime.now(),
-            diaryDay: DiaryDay(date: DateTime.now(), meals: []),
+            diaryEntry: DiaryEntry(date: DateTime.now(), meals: []),
             profile: Profile(
               id: 0,
               userId: '',
@@ -49,20 +49,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(profile: event.profile));
     });
 
-    on<SetDiaryDay>((event, emit) {
-      emit(state.copyWith(diaryDay: event.diaryDay));
+    on<SetDiaryEntry>((event, emit) {
+      emit(state.copyWith(diaryEntry: event.diaryEntry));
     });
 
     on<SetSelectedDate>((event, emit) {
       emit(state.copyWith(selectedDate: event.selectedDate));
-      setDiaryDay(event.selectedDate);
+      setDiaryEntry(event.selectedDate);
     });
 
     init();
   }
 
   init() async {
-    setDiaryDay(DateTime.now());
+    setDiaryEntry(DateTime.now());
     await getProfile();
   }
 
@@ -73,37 +73,39 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> addMeal(DailyMealEntry meal) async {
     try {
-      final DiaryDay updatedDiaryDay = await diaryRepository.addMeal(
+      final DiaryEntry updatedDiaryEntry = await diaryRepository.addMeal(
         meal,
         state.selectedDate,
+        userId,
       );
-      add(SetDiaryDay(diaryDay: updatedDiaryDay));
+      add(SetDiaryEntry(diaryEntry: updatedDiaryEntry));
     } catch (e) {
       developer.log(e.toString());
     }
   }
 
   Future<void> removeMeal(Occasion occasion, String recipeId) async {
-    final updatedDiaryDay = state.diaryDay.removeMeal(occasion, recipeId);
-    await diaryRepository.saveDay(updatedDiaryDay);
-    add(SetDiaryDay(diaryDay: updatedDiaryDay));
+    final updatedDiaryEntry = state.diaryEntry.removeMeal(occasion, recipeId);
+    if (updatedDiaryEntry.meals.isEmpty) {
+      await diaryRepository.deleteDay(state.selectedDate, userId);
+    } else {
+      await diaryRepository.saveDay(updatedDiaryEntry, userId);
+    }
+    add(SetDiaryEntry(diaryEntry: updatedDiaryEntry));
   }
 
   void setSelectedDate(DateTime date) {
     add(SetSelectedDate(selectedDate: date));
   }
 
-  void setDiaryDay(DateTime date) async {
-    DiaryDay? diaryDay = await diaryRepository.getDay(date);
-    if (diaryDay == null) {
-      await diaryRepository.saveDay(DiaryDay(date: date, meals: []));
-      diaryDay = DiaryDay(date: date, meals: []);
-    }
-    add(SetDiaryDay(diaryDay: diaryDay));
+  void setDiaryEntry(DateTime date) async {
+    final diaryEntry = await diaryRepository.getDay(date, userId) ??
+        DiaryEntry(date: date, meals: []);
+    add(SetDiaryEntry(diaryEntry: diaryEntry));
   }
 
-  void updateDay(DiaryDay diaryDay) async {
-    await diaryRepository.saveDay(diaryDay);
-    add(SetDiaryDay(diaryDay: diaryDay));
+  void updateDay(DiaryEntry diaryEntry) async {
+    await diaryRepository.saveDay(diaryEntry, userId);
+    add(SetDiaryEntry(diaryEntry: diaryEntry));
   }
 }

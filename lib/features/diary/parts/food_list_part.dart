@@ -12,7 +12,7 @@ class FoodListPart extends StatelessWidget {
           itemCount: Occasion.values.length,
           itemBuilder: (context, index) {
             final occasion = Occasion.values[index];
-            final recipes = state.diaryDay.meals
+            final recipes = state.diaryEntry.meals
                 .where((meal) => meal.occasion == occasion)
                 .map((meal) => meal.recipe)
                 .toList();

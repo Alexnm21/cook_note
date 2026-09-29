@@ -7,9 +7,9 @@ class SetProfile extends ProfileEvent {
   SetProfile({required this.profile});
 }
 
-class SetDiaryDay extends ProfileEvent {
-  final DiaryDay diaryDay;
-  SetDiaryDay({required this.diaryDay});
+class SetDiaryEntry extends ProfileEvent {
+  final DiaryEntry diaryEntry;
+  SetDiaryEntry({required this.diaryEntry});
 }
 
 class SetSelectedDate extends ProfileEvent {
