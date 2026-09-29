@@ -32,7 +32,7 @@ class EditProfileView extends StatelessWidget {
           return ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: 7,
+              itemCount: 8,
               separatorBuilder: (context, index) => const _Divider(),
               itemBuilder: (context, index) {
                 switch (index) {
@@ -76,6 +76,31 @@ class EditProfileView extends StatelessWidget {
                     );
                   case 2:
                     return EditProfileTilePart(
+                      title: 'profile.target_weight'.tr(),
+                      value: state.profile.targetWeight == null
+                          ? '-'
+                          : '${state.profile.targetWeight} kg',
+                      onTap: () {
+                        showInputDialog(
+                          context,
+                          title: 'profile.target_weight'.tr(),
+                          currentValue: '${state.profile.targetWeight ?? ''}',
+                          onSave: (value) {
+                            context.read<EditProfileBloc>().onChangeProfile(
+                                  state.profile.copyWith(
+                                      targetWeight: int.tryParse(value)),
+                                );
+                          },
+                          keyboardType: TextInputType.number,
+                          validator: (value) =>
+                              ValidationService.validatePositiveInt(value,
+                                      max: 500)
+                                  ?.tr(),
+                        );
+                      },
+                    );
+                  case 3:
+                    return EditProfileTilePart(
                       title: 'profile.height'.tr(),
                       value: '${state.profile.height} cm',
                       onTap: () {
@@ -97,7 +122,7 @@ class EditProfileView extends StatelessWidget {
                         );
                       },
                     );
-                  case 3:
+                  case 4:
                     return EditProfileTilePart(
                       title: 'profile.gender.title'.tr(),
                       value:
@@ -117,7 +142,7 @@ class EditProfileView extends StatelessWidget {
                         );
                       },
                     );
-                  case 4:
+                  case 5:
                     return EditProfileTilePart(
                       title: 'profile.age'.tr(),
                       value: '${state.profile.age}',
@@ -140,7 +165,7 @@ class EditProfileView extends StatelessWidget {
                         );
                       },
                     );
-                  case 5:
+                  case 6:
                     return EditProfileTilePart(
                       title: 'profile.activity_level.title'.tr(),
                       value:
@@ -163,7 +188,7 @@ class EditProfileView extends StatelessWidget {
                         );
                       },
                     );
-                  case 6:
+                  case 7:
                     return EditProfileTilePart(
                       title: 'profile.goal.title'.tr(),
                       value: 'profile.goal.${state.profile.goal?.name}'.tr(),

@@ -15,6 +15,7 @@ import '../../pages/edit_profile_page.dart';
 import '../../pages/forgot_password_page.dart';
 import '../../pages/recent_recipes_page.dart';
 import '../../pages/recipe_page.dart';
+import '../../pages/weight_evolution_page.dart';
 
 enum Routes {
   home,
@@ -24,6 +25,7 @@ enum Routes {
   recipe,
   editProfile,
   recentRecipes,
+  weightEvolution,
 }
 
 late final GoRouter router;
@@ -113,6 +115,14 @@ GoRouter buildRouter(UserBloc userBloc) {
             path: '/recentRecipes',
             name: Routes.recentRecipes.name,
             builder: (context, state) => const RecentRecipesPage(),
+          ),
+          GoRoute(
+            path: '/weightEvolution',
+            name: Routes.weightEvolution.name,
+            builder: (context, state) => WeightEvolutionPage(
+              userId: (state.extra as Profile).userId,
+              targetWeight: (state.extra as Profile).targetWeight,
+            ),
           ),
         ],
       ),

@@ -39,6 +39,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       name: current.name ?? base.name,
       height: current.height ?? base.height,
       weight: current.weight ?? base.weight,
+      targetWeight: current.targetWeight ?? base.targetWeight,
       gender: current.gender ?? base.gender,
       age: current.age ?? base.age,
       activityLevel: current.activityLevel ?? base.activityLevel,
