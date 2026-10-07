@@ -30,7 +30,15 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     await recipeRepository.addRecipe(recipe, imageFile: imageFile);
   }
 
-  updateRecipe(RecipeDto recipe, File? imageFile) async {
-    await recipeRepository.updateRecipe(recipe, imageFile: imageFile);
+  updateRecipe(RecipeDto recipe, File? imageFile, {bool deleteImage = false}) async {
+    await recipeRepository.updateRecipe(
+      recipe,
+      imageFile: imageFile,
+      deleteImage: deleteImage,
+    );
+  }
+
+  deleteRecipe(String id) async {
+    await recipeRepository.deleteRecipe(id);
   }
 }

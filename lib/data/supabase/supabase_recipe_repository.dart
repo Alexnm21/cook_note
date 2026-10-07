@@ -143,6 +143,8 @@ class SupabaseRecipeRepository extends BaseSupabaseRepository
     final recipeMap = recipe.toMap();
     if (imageFileName != null) {
       recipeMap['image'] = imageFileName;
+    } else if (deleteImage) {
+      recipeMap['image'] = null;
     } else {
       recipeMap.remove('image');
     }
@@ -152,13 +154,19 @@ class SupabaseRecipeRepository extends BaseSupabaseRepository
 
   @override
   Future<void> deleteRecipe(String id) async {
-    final recipeData =
-        await supabase.from(tableName).delete().eq('id', id).select().single();
+    final response =
+        await supabase.from(tableName).delete().eq('id', id).select();
 
-    String? image = recipeData['image'];
+    if (response.isEmpty) return;
 
-    if (image != null) {
-      await supabase.storage.from(bucketName).remove([image]);
+    final image = response.first['image'] as String?;
+
+    if (image != null && image.isNotEmpty) {
+      try {
+        await supabase.storage.from(bucketName).remove([image]);
+      } catch (e) {
+        log('Error al eliminar la imagen de la receta: $e');
+      }
     }
   }
 

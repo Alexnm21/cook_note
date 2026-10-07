@@ -56,28 +56,79 @@ void main() {
         await expectLater(recipeBloc.addRecipe(recipeDto, null), completes);
 
         // Assert
-        // En un test real, verificarías que el mock fue llamado correctamente
-        // y que el estado del bloc se actualizó apropiadamente
+        final recipes = await mockRepository.getRecipes('test-user-id');
+        expect(recipes.length, 1);
+        expect(recipes.first.name, 'Test Recipe');
       });
     });
 
     group('updateRecipe', () {
-      test('calls repository updateRecipe method', () async {
+      test('actualiza la receta existente', () async {
         // Arrange
-        final recipeDto = RecipeDto(
-          id: 'test-recipe-id',
-          name: 'Updated Recipe',
-          description: 'Updated Description',
+        final created = RecipeDto(
+          name: 'Receta original',
           userId: 'test-user-id',
           ingredients: [],
           steps: [],
         );
+        await recipeBloc.addRecipe(created, null);
+        final stored = (await mockRepository.getRecipes('test-user-id')).first;
+
+        final edited = RecipeDto.fromRecipe(stored)..name = 'Receta editada';
 
         // Act
-        await expectLater(recipeBloc.updateRecipe(recipeDto, null), completes);
+        await expectLater(recipeBloc.updateRecipe(edited, null), completes);
 
         // Assert
-        // Verificar que el mock fue llamado correctamente
+        final recipes = await mockRepository.getRecipes('test-user-id');
+        expect(recipes.length, 1);
+        expect(recipes.first.name, 'Receta editada');
+      });
+
+      test('propaga deleteImage para borrar la imagen almacenada', () async {
+        // Arrange
+        final created = RecipeDto(
+          name: 'Con imagen',
+          image: 'imagen.png',
+          userId: 'test-user-id',
+          ingredients: [],
+          steps: [],
+        );
+        await recipeBloc.addRecipe(created, null);
+
+        final edited = RecipeDto.fromRecipe(
+          (await mockRepository.getRecipes('test-user-id')).first,
+        )..name = 'Sin imagen';
+
+        // Act
+        await recipeBloc.updateRecipe(edited, null, deleteImage: true);
+
+        // Assert
+        final recipes = await mockRepository.getRecipes('test-user-id');
+        expect(recipes.first.name, 'Sin imagen');
+        expect(recipes.first.image, isNull);
+      });
+    });
+
+    group('deleteRecipe', () {
+      test('elimina la receta del repositorio', () async {
+        // Arrange
+        await recipeBloc.addRecipe(
+          RecipeDto(
+            name: 'A eliminar',
+            userId: 'test-user-id',
+            ingredients: [],
+            steps: [],
+          ),
+          null,
+        );
+        final recipes = await mockRepository.getRecipes('test-user-id');
+
+        // Act
+        await recipeBloc.deleteRecipe(recipes.first.id);
+
+        // Assert
+        expect(await mockRepository.getRecipes('test-user-id'), isEmpty);
       });
     });
   });

@@ -43,6 +43,7 @@ class RecipeFormState extends State<RecipeForm> {
   late bool isDialog;
   late RecipeDto recipe;
   File? imageFile;
+  bool deleteImage = false;
 
   Map<Macros, double>? macros;
 
@@ -75,7 +76,11 @@ class RecipeFormState extends State<RecipeForm> {
     if (recipe.id == null) {
       context.read<RecipeBloc>().addRecipe(recipe, imageFile);
     } else {
-      context.read<RecipeBloc>().updateRecipe(recipe, imageFile);
+      context.read<RecipeBloc>().updateRecipe(
+            recipe,
+            imageFile,
+            deleteImage: deleteImage,
+          );
     }
 
     router.goNamed('home');
@@ -119,10 +124,17 @@ class RecipeFormState extends State<RecipeForm> {
                     imageFile: imageFile,
                     imageUrl: recipe.image ?? '',
                     onChange: (file) {
-                      setState(() => imageFile = file);
+                      setState(() {
+                        imageFile = file;
+                        deleteImage = false;
+                      });
                     },
                     onRemove: () {
-                      setState(() => imageFile = null);
+                      setState(() {
+                        imageFile = null;
+                        deleteImage = true;
+                        recipe.image = null;
+                      });
                     },
                   ),
                 ],
@@ -187,7 +199,6 @@ class RecipeFormState extends State<RecipeForm> {
             MacrosFormPart(
               macros: macros,
               ingredients: recipe.ingredients ?? [],
-              portions: recipe.portions ?? 1,
               onChanged: (value) {
                 setState(() {
                   macros = value;

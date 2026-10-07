@@ -54,11 +54,19 @@ class MockRecipeRepository implements RecipeRepository {
   }
 
   @override
-  Future<void> updateRecipe(RecipeDto recipe, {File? imageFile}) async {
+  Future<void> updateRecipe(
+    RecipeDto recipe, {
+    File? imageFile,
+    bool deleteImage = false,
+  }) async {
     await Future.delayed(const Duration(milliseconds: 100));
     final index = _recipes.indexWhere((r) => r.id == recipe.id);
     if (index != -1) {
-      _recipes[index] = recipe.toRecipe();
+      final updated = recipe.toRecipe();
+      if (deleteImage) {
+        updated.image = null;
+      }
+      _recipes[index] = updated;
     }
   }
 

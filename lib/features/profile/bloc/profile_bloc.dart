@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/enums/enums.dart';
@@ -46,7 +47,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           ),
         ) {
     on<SetProfile>((event, emit) {
-      emit(state.copyWith(profile: event.profile));
+      emit(state.copyWith(profile: event.profile, resetError: true));
+    });
+
+    on<SetProfileLoading>((event, emit) {
+      emit(state.copyWith(loading: event.loading));
+    });
+
+    on<SetProfileError>((event, emit) {
+      emit(state.copyWith(loading: false, errorMessage: event.errorMessage));
     });
 
     on<SetDiaryEntry>((event, emit) {
@@ -66,12 +75,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     await getProfile();
   }
 
-  Future<void> getProfile() async {
-    final Profile profile = await profileRepository.getProfile(userId);
-    add(SetProfile(profile: profile));
+Future<void> getProfile() async {
+    add(SetProfileLoading(loading: true));
+    try {
+      final Profile profile = await profileRepository.getProfile(userId);
+      add(SetProfile(profile: profile));
+    } catch (e, s) {
+      developer.log('Error al obtener el perfil', error: e, stackTrace: s);
+      add(SetProfileError(errorMessage: 'profile.load_error'.tr()));
+    }
   }
 
-  Future<void> addMeal(DailyMealEntry meal) async {
+Future<void> addMeal(DailyMealEntry meal) async {
     try {
       final DiaryEntry updatedDiaryEntry = await diaryRepository.addMeal(
         meal,
@@ -79,19 +94,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         userId,
       );
       add(SetDiaryEntry(diaryEntry: updatedDiaryEntry));
-    } catch (e) {
-      developer.log(e.toString());
+    } catch (e, s) {
+      developer.log('Error al añadir la comida', error: e, stackTrace: s);
+      add(SetProfileError(errorMessage: 'profile.meal_error'.tr()));
     }
   }
 
   Future<void> removeMeal(Occasion occasion, String recipeId) async {
-    final updatedDiaryEntry = state.diaryEntry.removeMeal(occasion, recipeId);
-    if (updatedDiaryEntry.meals.isEmpty) {
-      await diaryRepository.deleteDay(state.selectedDate, userId);
-    } else {
-      await diaryRepository.saveDay(updatedDiaryEntry, userId);
+    try {
+      final updatedDiaryEntry = state.diaryEntry.removeMeal(occasion, recipeId);
+      if (updatedDiaryEntry.meals.isEmpty) {
+        await diaryRepository.deleteDay(state.selectedDate, userId);
+      } else {
+        await diaryRepository.saveDay(updatedDiaryEntry, userId);
+      }
+      add(SetDiaryEntry(diaryEntry: updatedDiaryEntry));
+    } catch (e, s) {
+      developer.log('Error al eliminar la comida', error: e, stackTrace: s);
+      add(SetProfileError(errorMessage: 'profile.meal_error'.tr()));
     }
-    add(SetDiaryEntry(diaryEntry: updatedDiaryEntry));
   }
 
   void setSelectedDate(DateTime date) {

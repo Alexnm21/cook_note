@@ -4,14 +4,12 @@ class MacrosFormPart extends StatefulWidget {
   final Map<Macros, double>? macros;
   final Function(Map<Macros, double>) onChanged;
   final List<Ingredient> ingredients;
-  final int portions;
 
   const MacrosFormPart({
     super.key,
     this.macros,
     required this.onChanged,
     required this.ingredients,
-    this.portions = 1,
   });
 
   @override
@@ -40,7 +38,6 @@ class _MacrosFormPartState extends State<MacrosFormPart> {
       final service = MacrosAIService();
       final calculatedMacros = await service.calculateMacros(
         widget.ingredients,
-        portions: widget.portions,
       );
 
       widget.onChanged(calculatedMacros);

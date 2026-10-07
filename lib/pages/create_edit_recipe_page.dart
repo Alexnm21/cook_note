@@ -24,7 +24,12 @@ class CreateEditRecipePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.formBackground,
         appBar: AppBar(
-          title: Text('recipe_form.new_recipe'.tr()),
+          title: Text(
+            (recipe == null
+                    ? 'recipe_form.new_recipe'
+                    : 'recipe_form.edit_recipe')
+                .tr(),
+          ),
           backgroundColor: Colors.transparent,
         ),
         body: RecipeForm(updateRecipe: recipe),

@@ -1,6 +1,7 @@
 import '../enums/activity_level.dart';
 import '../enums/gender.dart';
 import '../enums/goal.dart';
+import '../extensions/enum_extension.dart';
 import '../extensions/map_extension.dart';
 
 class Profile {
@@ -29,16 +30,22 @@ class Profile {
 
   factory Profile.fromMap(Map<String, dynamic> map) {
     return Profile(
-      id: map['id'],
-      userId: map['user_id'],
-      name: map['name'],
-      height: map['height'],
-      weight: map['weight'],
+      id: (map['id'] as num?)?.toInt() ?? 0,
+      userId: map['user_id'] as String? ?? '',
+      name: map['name'] as String? ?? '',
+      height: (map['height'] as num?)?.toInt() ?? 0,
+      weight: (map['weight'] as num?)?.toInt() ?? 0,
       targetWeight: (map['target_weight'] as num?)?.toInt(),
-      gender: GenderExtension.fromString(map['gender']),
-      age: map['age'],
-      activityLevel: ActivityLevelExtension.fromString(map['activity_level']),
-      goal: GoalExtension.fromString(map['goal']),
+      gender: EnumExtension.fromStringNullable(
+              map['gender'] as String?, Gender.values) ??
+          Gender.male,
+      age: (map['age'] as num?)?.toInt() ?? 0,
+      activityLevel: EnumExtension.fromStringNullable(
+              map['activity_level'] as String?, ActivityLevel.values) ??
+          ActivityLevel.sedentary,
+      goal:
+          EnumExtension.fromStringNullable(map['goal'] as String?, Goal.values) ??
+              Goal.maintainWeight,
     );
   }
 }

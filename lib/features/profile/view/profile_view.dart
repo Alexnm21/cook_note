@@ -21,118 +21,129 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-      if (state.loading) {
-        return const Center(
-          child: CircularProgressIndicator(
-            color: AppColors.primary,
-          ),
+    return BlocListener<ProfileBloc, ProfileState>(
+      listenWhen: (previous, current) =>
+          current.errorMessage != null &&
+          previous.errorMessage != current.errorMessage,
+      listener: (context, state) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(state.errorMessage!)),
         );
-      }
+      },
+      child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+        if (state.loading) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primary,
+            ),
+          );
+        }
 
-      final profile = state.profile;
-      return SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildProfileHeader(
-              profile.name,
-              () {
-                router.pushNamed(Routes.editProfile.name, extra: profile);
-              },
-            ),
-            spacings.y.s24,
-            InfoCardPart(
-              title: 'profile.personal_info'.tr(),
-              children: [
-                InfoRowPart(label: 'core.name'.tr(), value: profile.name),
-                InfoRowPart(
-                    label: 'profile.age'.tr(), value: '${profile.age} años'),
-                InfoRowPart(
-                    label: 'profile.gender.title'.tr(),
-                    value: profile.gender.text),
-              ],
-            ),
-            spacings.y.s24,
-            InfoCardPart(
-              title: 'profile.physical_info'.tr(),
-              children: [
-                InfoRowPart(
-                    label: 'profile.height'.tr(),
-                    value: '${profile.height} cm'),
-                InfoRowPart(
-                    label: 'profile.weight'.tr(),
-                    value: '${profile.weight} kg'),
-                InfoRowPart(
-                  label: 'profile.activity_level.title'.tr(),
-                  value: profile.activityLevel.text,
-                ),
-                InkWell(
-                  onTap: () {
-                    router.pushNamed(
-                      Routes.weightEvolution.name,
-                      extra: profile,
-                    );
-                  },
-                  child: Padding(
-                    padding: paddings.bottom.s12,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('weight.title'.tr(),
-                            style: baseTextStyle.h3
-                                .copyWith(color: Colors.grey[600])),
-                        const Icon(
-                          Icons.chevron_right,
-                          color: AppColors.primary,
-                        ),
-                      ],
+        final profile = state.profile;
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildProfileHeader(
+                profile.name,
+                () {
+                  router.pushNamed(Routes.editProfile.name, extra: profile);
+                },
+              ),
+              spacings.y.s24,
+              InfoCardPart(
+                title: 'profile.personal_info'.tr(),
+                children: [
+                  InfoRowPart(label: 'core.name'.tr(), value: profile.name),
+                  InfoRowPart(
+                      label: 'profile.age'.tr(), value: '${profile.age} años'),
+                  InfoRowPart(
+                      label: 'profile.gender.title'.tr(),
+                      value: profile.gender.text),
+                ],
+              ),
+              spacings.y.s24,
+              InfoCardPart(
+                title: 'profile.physical_info'.tr(),
+                children: [
+                  InfoRowPart(
+                      label: 'profile.height'.tr(),
+                      value: '${profile.height} cm'),
+                  InfoRowPart(
+                      label: 'profile.weight'.tr(),
+                      value: '${profile.weight} kg'),
+                  InfoRowPart(
+                    label: 'profile.activity_level.title'.tr(),
+                    value: profile.activityLevel.text,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      router.pushNamed(
+                        Routes.weightEvolution.name,
+                        extra: profile,
+                      );
+                    },
+                    child: Padding(
+                      padding: paddings.bottom.s12,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('weight.title'.tr(),
+                              style: baseTextStyle.h3
+                                  .copyWith(color: Colors.grey[600])),
+                          const Icon(
+                            Icons.chevron_right,
+                            color: AppColors.primary,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            spacings.y.s24,
-            InfoCardPart(
-              title: 'profile.goals'.tr(),
-              children: [
-                InfoRowPart(
-                  label: 'profile.goal.title'.tr(),
-                  value: profile.goal.text,
-                ),
-                InfoRowPart(
-                  label: 'profile.target_weight'.tr(),
-                  value: profile.targetWeight != null
-                      ? '${profile.targetWeight} kg'
-                      : '${profile.weight} kg',
-                ),
-              ],
-            ),
-            spacings.y.s24,
-            Container(
-              margin: paddings.x.s16,
-              width: double.infinity,
-              child: CustomButton(
-                onPressed: () {
-                  context.read<UserBloc>().logout();
-                },
-                color: AppColors.primary,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.logout, color: Colors.white),
-                    spacings.x.s8,
-                    Text('core.logout'.tr(),
-                        style: baseTextStyle.h2.copyWith(color: Colors.white)),
-                  ],
-                ),
+                ],
               ),
-            )
-          ],
-        ),
-      );
-    });
+              spacings.y.s24,
+              InfoCardPart(
+                title: 'profile.goals'.tr(),
+                children: [
+                  InfoRowPart(
+                    label: 'profile.goal.title'.tr(),
+                    value: profile.goal.text,
+                  ),
+                  InfoRowPart(
+                    label: 'profile.target_weight'.tr(),
+                    value: profile.targetWeight != null
+                        ? '${profile.targetWeight} kg'
+                        : '${profile.weight} kg',
+                  ),
+                ],
+              ),
+              spacings.y.s24,
+              Container(
+                margin: paddings.x.s16,
+                width: double.infinity,
+                child: CustomButton(
+                  onPressed: () {
+                    context.read<UserBloc>().logout();
+                  },
+                  color: AppColors.primary,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.logout, color: Colors.white),
+                      spacings.x.s8,
+                      Text('core.logout'.tr(),
+                          style: baseTextStyle.h2
+                              .copyWith(color: Colors.white)),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      }),
+    );
   }
 
   Widget _buildProfileHeader(String name, Function() onEdit) {

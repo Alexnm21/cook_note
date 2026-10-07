@@ -7,6 +7,16 @@ class SetProfile extends ProfileEvent {
   SetProfile({required this.profile});
 }
 
+class SetProfileLoading extends ProfileEvent {
+  final bool loading;
+  SetProfileLoading({required this.loading});
+}
+
+class SetProfileError extends ProfileEvent {
+  final String errorMessage;
+  SetProfileError({required this.errorMessage});
+}
+
 class SetDiaryEntry extends ProfileEvent {
   final DiaryEntry diaryEntry;
   SetDiaryEntry({required this.diaryEntry});

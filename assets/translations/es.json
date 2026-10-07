@@ -4,6 +4,7 @@
         "minutes": "Minutos",
         "image": "Imagen",
         "accept": "Aceptar",
+        "reject": "Cancelar",
         "search": "Buscar",
         "logout": "Cerrar sesión",
         "all": "Todos"
@@ -93,6 +94,10 @@
         "ingredients": "Ingredientes",
         "instructions": "Instrucciones",
         "select": "Seleccionar receta",
+        "delete_title": "Eliminar receta",
+        "delete_confirm": "¿Seguro que quieres eliminar {}? Esta acción no se puede deshacer.",
+        "deleted": "Receta eliminada",
+        "delete_error": "No se pudo eliminar la receta",
         "difficulty": {
             "title": "Dificultad",
             "easy": "Fácil",
@@ -110,6 +115,7 @@
     },
     "recipe_form": {
         "new_recipe": "Nueva receta",
+        "edit_recipe": "Editar receta",
         "title": "Título",
         "time": "Tiempo",
         "description": "Descripción",
@@ -172,7 +178,8 @@
             "gainWeightHealthy": "Ganar peso de forma saludable",
             "gainWeight": "Ganar peso"
         },
-        "load_error": "Error al cargar el perfil"
+        "load_error": "Error al cargar el perfil",
+        "meal_error": "Error al modificar el diario"
     },
     "weight": {
         "title": "Evolución del peso",
